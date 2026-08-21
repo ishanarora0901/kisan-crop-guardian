@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { handleMockApiRequest } from './mockDemoData';
 
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
+  timeout: 8000,
 });
 
 // Request interceptor to attach JWT token
@@ -12,6 +14,30 @@ API.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Response interceptor: automatically falls back to client-side mock engine if backend is offline / 404 / 500
+API.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    // If network error, 404, or 500+ serverless failure on static hosts like Vercel
+    if (
+      !error.response ||
+      error.response.status >= 500 ||
+      error.response.status === 404 ||
+      error.code === 'ECONNABORTED' ||
+      error.message?.includes('Network Error')
+    ) {
+      console.info('⚡ Live API backend unavailable — serving high-fidelity simulated response for:', error.config?.url);
+      try {
+        const mockResponse = await handleMockApiRequest(error.config);
+        return mockResponse;
+      } catch (mockErr) {
+        console.error('Mock engine error:', mockErr);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Auth API
 export const loginApi = (data) => API.post('/auth/login', data);

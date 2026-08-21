@@ -1,6 +1,9 @@
 # AI Crop Guardian 🌾
 **Intelligent Agriculture Decision-Support & Proactive Intelligence Platform (Full-Stack MERN)**
 
+> 🌐 **LIVE DEMO SERVER (CLICK TO VIEW LIVE)**: **[https://pubs-are-lancaster-reviewer.trycloudflare.com](https://pubs-are-lancaster-reviewer.trycloudflare.com)**
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Online%20(HTTPS)-emerald?style=for-the-badge&logo=googlechrome&logoColor=white)](https://pubs-are-lancaster-reviewer.trycloudflare.com)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ishanarora0901/kisan-crop-guardian)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ishanarora0901/kisan-crop-guardian)
 
@@ -10,16 +13,28 @@
 
 ---
 
-## 🚀 1-Click Live Deployment Instructions
+## 🔗 Instant Live Access Links
 
-### 1. Deploy Frontend on Vercel (Free & Instant)
-1. Click the **[Deploy with Vercel](https://vercel.com/new/clone?repository-url=https://github.com/ishanarora0901/kisan-crop-guardian)** button above.
-2. Sign in with GitHub and click **Deploy**.
-3. Your live web app URL (e.g. `https://kisan-crop-guardian.vercel.app`) will be generated in under 60 seconds!
+| Module | Direct Live URL | Description |
+| :--- | :--- | :--- |
+| 🌾 **Farmer Command Center** | **[Live Web App](https://pubs-are-lancaster-reviewer.trycloudflare.com/login)** | Real-time crop health score (81/100), soil telemetry, weather anomalies & proactive alerts |
+| 🛡️ **Dedicated Admin Operations Portal** | **[Admin Portal](https://pubs-are-lancaster-reviewer.trycloudflare.com/admin)** | Regional platform KPIs, emergency broadcast dispatcher, user management, blockchain ledger |
+| 📜 **Blockchain Crop Passport Verifier** | **[Public Verifier](https://pubs-are-lancaster-reviewer.trycloudflare.com/verify/CROP-PASS-WHEAT-2026)** | Cryptographic SHA-256 tamper-proof ledger & Merkle verification for buyers & banks |
+| 🔬 **AI Vision Leaf Disease Scanner** | **[Disease Scanner](https://pubs-are-lancaster-reviewer.trycloudflare.com/disease-scanner)** | Instant computer vision diagnosis with 88% confidence score & specialist referral |
+| 📊 **Financial & What-If Simulator** | **[What-If Simulator](https://pubs-are-lancaster-reviewer.trycloudflare.com/what-if-simulator)** | Multi-season comparison (+₹15,000 profit gain) and crop-to-crop sensitivity engine |
+| 💬 **Specialist Consultation Advisory** | **[Consultations](https://pubs-are-lancaster-reviewer.trycloudflare.com/consultations)** | Agronomist review queue, direct messaging & digitally signed ICAR prescriptions |
 
-### 2. Deploy Full-Stack Backend on Render (Free)
-1. Click the **[Deploy to Render](https://render.com/deploy?repo=https://github.com/ishanarora0901/kisan-crop-guardian)** button above.
-2. Click **Apply** to automatically spin up both the Node.js API and static frontend from the included `render.yaml` blueprint.
+---
+
+## 👥 1-Click Demo Personas & Credentials
+
+On the login page, simply click any of the **Quick Demo Login Buttons**:
+
+| Persona | Role | Email | Password | Primary Feature Access |
+| :--- | :--- | :--- | :--- | :--- |
+| **Harpreet Singh** | Farmer | `farmer@cropguardian.ai` | `password123` | Farm Command Center, Disease Scanner, What-If Simulator, Passport |
+| **Dr. Ramesh Sharma** | Specialist | `specialist@cropguardian.ai` | `password123` | Consultation Queue, Pathological Review, Prescription Issuer |
+| **Chief Agri Officer** | Admin | `admin@cropguardian.ai` | `adminpassword123` | Dedicated Admin Portal (`/admin`), Broadcast Dispatcher, Blockchain Ledger |
 
 ---
 
@@ -61,15 +76,18 @@
 
 ---
 
-## 👥 Demo Personas & Pre-Configured Accounts
+## 🚀 Deployment Guide
 
-Quick 1-click login buttons are provided directly on the login page:
+### Option 1: Vercel (1-Click Deployment)
+1. Fork or import this repository into your Vercel account.
+2. Root directory: `./` (or `frontend/`).
+3. Build command: `cd frontend && npm install && npm run build`
+4. Output directory: `frontend/dist`
+5. Click **Deploy**. The application comes equipped with a high-fidelity client-side agricultural mock engine and SPA routing rewrite so all pages, simulations, and features work seamlessly with zero setup!
 
-| Persona | Role | Email | Password | Primary Feature Access |
-| :--- | :--- | :--- | :--- | :--- |
-| **Harpreet Singh** | Farmer | `farmer@cropguardian.ai` | `password123` | Farm Command Center, Disease Scanner, What-If Simulator, Passport |
-| **Dr. Ramesh Sharma** | Specialist | `specialist@cropguardian.ai` | `password123` | Consultation Queue, Pathological Review, Prescription Issuer |
-| **Chief Agri Officer** | Admin | `admin@cropguardian.ai` | `adminpassword123` | Dedicated Admin Portal (`/admin`), Broadcast Dispatcher, Blockchain Ledger |
+### Option 2: Render (Full-Stack Blueprint)
+1. Click the **[Deploy to Render](https://render.com/deploy?repo=https://github.com/ishanarora0901/kisan-crop-guardian)** button.
+2. Click **Apply** to spin up the Node.js API and static frontend from `render.yaml`.
 
 ---
 

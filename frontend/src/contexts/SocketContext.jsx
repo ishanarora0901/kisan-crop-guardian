@@ -10,22 +10,37 @@ export const SocketProvider = ({ children }) => {
   const [liveAlerts, setLiveAlerts] = useState([]);
 
   useEffect(() => {
-    const newSocket = io(window.location.origin, {
-      transports: ['websocket', 'polling'],
-    });
+    // Only connect if running locally on port 3000 or custom host
+    let newSocket = null;
+    try {
+      newSocket = io(window.location.origin, {
+        transports: ['websocket', 'polling'],
+        reconnectionAttempts: 2,
+        timeout: 3000,
+        autoConnect: true,
+      });
 
-    setSocket(newSocket);
+      newSocket.on('connect_error', () => {
+        // Silently ignore socket connection errors in standalone demo mode
+      });
 
-    if (user?._id) {
-      newSocket.emit('join_farmer_room', user._id);
+      setSocket(newSocket);
+
+      if (user?._id) {
+        newSocket.emit('join_farmer_room', user._id);
+      }
+
+      newSocket.on('new_proactive_alert', (alert) => {
+        setLiveAlerts((prev) => [alert, ...prev]);
+      });
+    } catch (e) {
+      console.info('Socket init skipped in standalone mode');
     }
 
-    newSocket.on('new_proactive_alert', (alert) => {
-      setLiveAlerts((prev) => [alert, ...prev]);
-    });
-
     return () => {
-      newSocket.disconnect();
+      if (newSocket) {
+        newSocket.disconnect();
+      }
     };
   }, [user?._id]);
 
