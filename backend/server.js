@@ -92,6 +92,19 @@ io.on('connection', (socket) => {
   });
 });
 
+// Serve frontend static build if available in production
+const frontendDist = path.join(__dirname, '../frontend/dist');
+const fs = require('fs');
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+      return next();
+    }
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+}
+
 // Global Error Handler
 app.use(errorHandler);
 
@@ -101,13 +114,19 @@ const startServer = async () => {
   await connectDB();
   await seedDatabase();
 
-  server.listen(PORT, () => {
-    console.log(`\n======================================================`);
-    console.log(`🌾 AI Crop Guardian Backend Running on Port ${PORT}`);
-    console.log(`📡 REST API Endpoint: http://localhost:${PORT}/api/health`);
-    console.log(`🌐 Role Accounts Ready (Farmer, Specialist, Admin)`);
-    console.log(`======================================================\n`);
-  });
+  if (process.env.NODE_ENV !== 'test') {
+    server.listen(PORT, () => {
+      console.log(`\n======================================================`);
+      console.log(`🌾 AI Crop Guardian Backend Running on Port ${PORT}`);
+      console.log(`📡 REST API Endpoint: http://localhost:${PORT}/api/health`);
+      console.log(`🌐 Role Accounts Ready (Farmer, Specialist, Admin)`);
+      console.log(`======================================================\n`);
+    });
+  }
 };
 
-startServer();
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = { app, server, startServer };
