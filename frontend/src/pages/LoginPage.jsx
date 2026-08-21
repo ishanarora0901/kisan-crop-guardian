@@ -28,7 +28,7 @@ const LoginPage = () => {
         navigate('/dashboard');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid login credentials.');
+      setError(err.response?.data?.message || err.message || 'Invalid login credentials.');
     } finally {
       setLoading(false);
     }

@@ -29,22 +29,24 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const res = await loginApi({ email, password });
-    if (res.data.success) {
+    if (res.data && res.data.success) {
       localStorage.setItem('crop_guardian_token', res.data.token);
       setToken(res.data.token);
       setUser(res.data.user);
       return res.data.user;
     }
+    throw new Error(res.data?.message || 'Login failed.');
   };
 
   const register = async (data) => {
     const res = await registerApi(data);
-    if (res.data.success) {
+    if (res.data && res.data.success) {
       localStorage.setItem('crop_guardian_token', res.data.token);
       setToken(res.data.token);
       setUser(res.data.user);
       return res.data.user;
     }
+    throw new Error(res.data?.message || 'Registration failed.');
   };
 
   const logout = () => {
