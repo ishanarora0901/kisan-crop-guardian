@@ -1,0 +1,20 @@
+{
+  "name": "ai-crop-guardian",
+  "version": "1.0.0",
+  "description": "AI Crop Guardian — Intelligent Agriculture Decision-Support & Proactive Risk Intelligence Platform (Full-Stack MERN)",
+  "scripts": {
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "server": "cd backend && npm start",
+    "client": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "test:system": "cd backend && node utils/verifySystem.js"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "author": "AI Crop Guardian Team",
+  "license": "MIT"
+}

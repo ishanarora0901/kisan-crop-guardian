@@ -1,0 +1,42 @@
+module.exports = {
+  ROLES: {
+    FARMER: 'farmer',
+    SPECIALIST: 'specialist',
+    ADMIN: 'admin',
+    VERIFIER: 'verifier',
+  },
+  RISK_LEVELS: {
+    LOW: 'LOW',
+    MEDIUM: 'MEDIUM',
+    HIGH: 'HIGH',
+    CRITICAL: 'CRITICAL',
+  },
+  CROPS: [
+    'Wheat',
+    'Rice',
+    'Cotton',
+    'Maize',
+    'Mustard',
+    'Sugarcane',
+    'Potato',
+    'Tomato',
+    'Soybean',
+    'Groundnut',
+  ],
+  SOIL_TYPES: [
+    'Alluvial Soil',
+    'Black (Regur) Soil',
+    'Red & Yellow Soil',
+    'Laterite Soil',
+    'Sandy Loam',
+    'Clay Loam',
+    'Silt Loam',
+  ],
+  IRRIGATION_METHODS: [
+    'Drip Irrigation',
+    'Sprinkler System',
+    'Canal / Flood Irrigation',
+    'Tube-well / Borewell',
+    'Rainfed Only',
+  ],
+};
