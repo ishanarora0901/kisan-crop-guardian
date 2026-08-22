@@ -8,6 +8,7 @@
     "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
     "server": "cd backend && npm start",
     "client": "cd frontend && npm run dev",
+    "build": "cd frontend && npm install && npm run build",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "test:system": "cd backend && node utils/verifySystem.js"
