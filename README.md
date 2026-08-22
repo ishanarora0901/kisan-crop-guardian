@@ -1,9 +1,9 @@
 # AI Crop Guardian 🌾
 **Intelligent Agriculture Decision-Support & Proactive Intelligence Platform (Full-Stack MERN)**
 
-> 🌐 **LIVE DEMO SERVER (CLICK TO VIEW LIVE)**: **[https://pubs-are-lancaster-reviewer.trycloudflare.com](https://pubs-are-lancaster-reviewer.trycloudflare.com)**
+> 🌐 **LIVE DEMO SERVER (CLICK TO VIEW LIVE)**: **[https://kisan-crop-guardian-r6y3.vercel.app](https://kisan-crop-guardian-r6y3.vercel.app)**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Online%20(HTTPS)-emerald?style=for-the-badge&logo=googlechrome&logoColor=white)](https://pubs-are-lancaster-reviewer.trycloudflare.com)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Online%20(HTTPS)-emerald?style=for-the-badge&logo=googlechrome&logoColor=white)](https://kisan-crop-guardian-r6y3.vercel.app)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ishanarora0901/kisan-crop-guardian)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ishanarora0901/kisan-crop-guardian)
 
@@ -17,12 +17,12 @@
 
 | Module | Direct Live URL | Description |
 | :--- | :--- | :--- |
-| 🌾 **Farmer Command Center** | **[Live Web App](https://pubs-are-lancaster-reviewer.trycloudflare.com/login)** | Real-time crop health score (81/100), soil telemetry, weather anomalies & proactive alerts |
-| 🛡️ **Dedicated Admin Operations Portal** | **[Admin Portal](https://pubs-are-lancaster-reviewer.trycloudflare.com/admin)** | Regional platform KPIs, emergency broadcast dispatcher, user management, blockchain ledger |
-| 📜 **Blockchain Crop Passport Verifier** | **[Public Verifier](https://pubs-are-lancaster-reviewer.trycloudflare.com/verify/CROP-PASS-WHEAT-2026)** | Cryptographic SHA-256 tamper-proof ledger & Merkle verification for buyers & banks |
-| 🔬 **AI Vision Leaf Disease Scanner** | **[Disease Scanner](https://pubs-are-lancaster-reviewer.trycloudflare.com/disease-scanner)** | Instant computer vision diagnosis with 88% confidence score & specialist referral |
-| 📊 **Financial & What-If Simulator** | **[What-If Simulator](https://pubs-are-lancaster-reviewer.trycloudflare.com/what-if-simulator)** | Multi-season comparison (+₹15,000 profit gain) and crop-to-crop sensitivity engine |
-| 💬 **Specialist Consultation Advisory** | **[Consultations](https://pubs-are-lancaster-reviewer.trycloudflare.com/consultations)** | Agronomist review queue, direct messaging & digitally signed ICAR prescriptions |
+| 🌾 **Farmer Command Center** | **[Live Web App](https://kisan-crop-guardian-r6y3.vercel.app/login)** | Real-time crop health score (81/100), soil telemetry, weather anomalies & proactive alerts |
+| 🛡️ **Dedicated Admin Operations Portal** | **[Admin Portal](https://kisan-crop-guardian-r6y3.vercel.app/admin)** | Regional platform KPIs, emergency broadcast dispatcher, user management, blockchain ledger |
+| 📜 **Blockchain Crop Passport Verifier** | **[Public Verifier](https://kisan-crop-guardian-r6y3.vercel.app/verify/CROP-PASS-WHEAT-2026)** | Cryptographic SHA-256 tamper-proof ledger & Merkle verification for buyers & banks |
+| 🔬 **AI Vision Leaf Disease Scanner** | **[Disease Scanner](https://kisan-crop-guardian-r6y3.vercel.app/disease-scanner)** | Instant computer vision diagnosis with 88% confidence score & specialist referral |
+| 📊 **Financial & What-If Simulator** | **[What-If Simulator](https://kisan-crop-guardian-r6y3.vercel.app/what-if-simulator)** | Multi-season comparison (+₹15,000 profit gain) and crop-to-crop sensitivity engine |
+| 💬 **Specialist Consultation Advisory** | **[Consultations](https://kisan-crop-guardian-r6y3.vercel.app/consultations)** | Agronomist review queue, direct messaging & digitally signed ICAR prescriptions |
 
 ---
 

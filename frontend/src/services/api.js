@@ -15,27 +15,40 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// Response interceptor: automatically falls back to client-side mock engine if backend is offline / 404 / 500
+// Helper to check if a response is an HTML page (Vercel SPA rewrite fallback)
+const isHtmlResponse = (data) => {
+  if (typeof data === 'string') {
+    const trimmed = data.trim().toLowerCase();
+    return (
+      trimmed.startsWith('<!doctype html') ||
+      trimmed.startsWith('<html') ||
+      trimmed.includes('<div id="root">') ||
+      trimmed.includes('/assets/index') ||
+      trimmed.includes('<script')
+    );
+  }
+  return false;
+};
+
+// Response interceptor: automatically falls back to client-side mock engine if backend is offline / 404 / 500 or SPA returns HTML
 API.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    // If network error, 404, or 500+ serverless failure on static hosts like Vercel
-    if (
-      !error.response ||
-      error.response.status >= 500 ||
-      error.response.status === 404 ||
-      error.code === 'ECONNABORTED' ||
-      error.message?.includes('Network Error')
-    ) {
-      console.info('⚡ Live API backend unavailable — serving high-fidelity simulated response for:', error.config?.url);
-      try {
-        const mockResponse = await handleMockApiRequest(error.config);
-        return mockResponse;
-      } catch (mockErr) {
-        console.error('Mock engine error:', mockErr);
-      }
+  async (response) => {
+    // If Vercel SPA rewrite returned HTML for an API endpoint
+    if (isHtmlResponse(response.data)) {
+      console.info('⚡ Standalone Vercel Mode: Intercepting HTML response and serving simulated mock data for:', response.config?.url);
+      return await handleMockApiRequest(response.config);
     }
-    return Promise.reject(error);
+    return response;
+  },
+  async (error) => {
+    console.info('⚡ Live API backend unavailable — serving high-fidelity simulated response for:', error.config?.url);
+    try {
+      const mockResponse = await handleMockApiRequest(error.config);
+      return mockResponse;
+    } catch (mockErr) {
+      console.error('Mock engine error:', mockErr);
+      return Promise.reject(error);
+    }
   }
 );
 

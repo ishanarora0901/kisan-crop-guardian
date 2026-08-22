@@ -6,17 +6,25 @@ import { Tractor, Stethoscope, ShieldAlert, Sparkles } from 'lucide-react';
 const QuickLoginBanner = () => {
   const { quickLoginAs } = useAuth();
   const navigate = useNavigate();
+  const [loggingInRole, setLoggingInRole] = React.useState(null);
 
   const handleQuickLogin = async (role) => {
-    const user = await quickLoginAs(role);
-    if (user) {
-      if (user.role === 'specialist') {
-        navigate('/specialist/dashboard');
-      } else if (user.role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/dashboard');
+    try {
+      setLoggingInRole(role);
+      const user = await quickLoginAs(role);
+      if (user) {
+        if (user.role === 'specialist') {
+          navigate('/specialist/dashboard');
+        } else if (user.role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
       }
+    } catch (err) {
+      console.error('Quick login error:', err);
+    } finally {
+      setLoggingInRole(null);
     }
   };
 

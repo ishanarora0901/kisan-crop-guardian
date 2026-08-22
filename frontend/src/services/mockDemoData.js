@@ -447,16 +447,27 @@ export const saveMockStore = (state) => {
 /**
  * Dispatches simulated mock API responses for any endpoint
  */
-export const handleMockApiRequest = async (config) => {
+export const handleMockApiRequest = async (config = {}) => {
   const method = (config.method || 'get').toLowerCase();
-  const url = (config.url || '').replace(/^https?:\/\/[^/]+/, '').replace(/^\/api/, '');
-  const data = typeof config.data === 'string' ? JSON.parse(config.data || '{}') : config.data || {};
+  const rawUrl = config.url || '';
+  const url = rawUrl.replace(/^https?:\/\/[^/]+/, '').replace(/^\/api/, '');
+  
+  let data = {};
+  if (typeof config.data === 'string') {
+    try {
+      data = JSON.parse(config.data);
+    } catch (e) {
+      data = {};
+    }
+  } else if (config.data && typeof config.data === 'object') {
+    data = config.data;
+  }
+  
   const params = config.params || {};
 
   const store = getMockStore();
-  const currentUser = store.users.find(
-    (u) => u._id === (localStorage.getItem('crop_guardian_current_user_id') || 'usr_farmer_01')
-  ) || store.users[0];
+  const currentUserId = localStorage.getItem('crop_guardian_current_user_id') || 'usr_farmer_01';
+  const currentUser = store.users.find((u) => u._id === currentUserId) || store.users[0];
 
   // Helper response wrapper
   const respond = (status, payload) => {
@@ -680,26 +691,47 @@ export const handleMockApiRequest = async (config) => {
   }
 
   if (url.startsWith('/ai-risk/') && method === 'get' && !url.includes('alerts')) {
+    const predictionData = {
+      cropHealthScore: 81,
+      overallRisk: 'MEDIUM',
+      diseaseRisk: 72,
+      pestRisk: 38,
+      waterStressRisk: 21,
+      heatStressRisk: 54,
+      heavyRainfallRisk: 67,
+      expectedYieldLossRisk: 31,
+      contributingFactors: [
+        { factor: 'High Relative Humidity', impact: '84% humidity level sustains spore moisture on flag leaves.' },
+        { factor: 'Conducive Temperature Range', impact: '22°C - 28°C range accelerates fungal germination.' },
+        { factor: 'Historical Rust Outbreak', impact: 'Last season field infection elevates spore reservoir risk.' },
+      ],
+      recommendedAction:
+        'Inspect the wheat crop for early orange-yellow foliar pustules and apply preventive bio-fungicide protection.',
+      expectedTimeWindow: 'Next 3 to 5 days',
+    };
+    const weatherData = {
+      location: 'Samrala, Ludhiana (Punjab)',
+      temperatureC: 24.5,
+      condition: 'Partly Cloudy / Humid',
+      humidityPercentage: 84,
+      windSpeedKmH: 12.4,
+      rainfallMm: 4.2,
+      pressureHpa: 1012,
+      uvIndex: 5,
+      forecastDays: [
+        { day: 'Today', tempMin: 17, tempMax: 26, condition: 'Humid / Light Rain', rainfallChance: 65 },
+        { day: 'Tomorrow', tempMin: 16, tempMax: 25, condition: 'Overcast / High Humidity', rainfallChance: 75 },
+        { day: 'Day 3', tempMin: 18, tempMax: 27, condition: 'Partly Cloudy', rainfallChance: 30 },
+        { day: 'Day 4', tempMin: 19, tempMax: 28, condition: 'Clear Skies', rainfallChance: 10 },
+        { day: 'Day 5', tempMin: 18, tempMax: 29, condition: 'Sunny', rainfallChance: 5 },
+      ],
+    };
     return respond(200, {
       success: true,
-      riskPrediction: {
-        cropHealthScore: 81,
-        overallRisk: 'MEDIUM',
-        diseaseRisk: 72,
-        pestRisk: 38,
-        waterStressRisk: 21,
-        heatStressRisk: 54,
-        heavyRainfallRisk: 67,
-        expectedYieldLossRisk: 31,
-        contributingFactors: [
-          { factor: 'High Relative Humidity', impact: '84% humidity level sustains spore moisture on flag leaves.' },
-          { factor: 'Conducive Temperature Range', impact: '22°C - 28°C range accelerates fungal germination.' },
-          { factor: 'Historical Rust Outbreak', impact: 'Last season field infection elevates spore reservoir risk.' },
-        ],
-        recommendedAction:
-          'Inspect the wheat crop for early orange-yellow foliar pustules and apply preventive bio-fungicide protection.',
-        expectedTimeWindow: 'Next 3 to 5 days',
-      },
+      prediction: predictionData,
+      riskPrediction: predictionData,
+      weather: weatherData,
+      historicalAlert: null,
     });
   }
 
