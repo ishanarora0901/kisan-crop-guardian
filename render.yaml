@@ -1,23 +1,18 @@
 services:
+  # Unified Full-Stack Service (Vite frontend built at build-time & served by Node backend)
   - type: web
-    name: ai-crop-guardian-backend
+    name: ai-crop-guardian
     env: node
-    rootDir: backend
-    buildCommand: npm install
-    startCommand: node server.js
+    plan: free
+    buildCommand: cd backend && npm install && cd ../frontend && npm install && npm run build
+    startCommand: node backend/server.js
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
-
-  - type: web
-    name: ai-crop-guardian-frontend
-    env: static
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+      - key: MONGODB_URI
+        sync: false # Set your MongoDB Atlas connection string in Render Dashboard
+      - key: JWT_SECRET
+        generateValue: true

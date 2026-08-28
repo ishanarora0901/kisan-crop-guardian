@@ -76,18 +76,47 @@ On the login page, simply click any of the **Quick Demo Login Buttons**:
 
 ---
 
-## 🚀 Deployment Guide
+## 🚀 Deployment & Cloud Configuration Guide
 
-### Option 1: Vercel (1-Click Deployment)
+### 🗄️ 1. MongoDB Atlas Configuration (`MONGODB_URI`)
+To enable full persistent database storage on your deployment:
+1. Create a free account & cluster at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+2. Under **Database Access**, create a user (e.g. username: `admin`, password: `<your-password>`).
+3. Under **Network Access**, click **Add IP Address** -> select **Allow Access From Anywhere (`0.0.0.0/0`)**.
+4. In **Clusters** -> click **Connect** -> **Drivers** -> Copy your connection string.
+5. Set `MONGODB_URI` as an environment variable in your cloud service settings:
+   ```env
+   MONGODB_URI=mongodb+srv://admin:<password>@cluster0.xxxxx.mongodb.net/cropguardian?retryWrites=true&w=majority
+   ```
+
+---
+
+### 📦 2. Production Build Architecture (Frontend Build-Time & Backend Serving)
+In production deployments, the frontend is compiled at **image-build time** with Vite (`frontend/dist`) and served directly by the high-performance Node.js backend. This eliminates running Vite dev servers in production and prevents port conflicts.
+
+#### **Option A: Docker Multi-Stage Container (Recommended for Containers)**
+The repository includes a production multi-stage [Dockerfile](file:///Dockerfile) that compiles the frontend and packages the backend:
+```bash
+# Build the production container
+docker build -t ai-crop-guardian .
+
+# Run container with your MongoDB Atlas URI
+docker run -p 5000:5000 -e MONGODB_URI="mongodb+srv://admin:pass@cluster0.xxxxx.mongodb.net/cropguardian?retryWrites=true&w=majority" ai-crop-guardian
+```
+
+#### **Option B: Render (Unified Full-Stack Service)**
+1. Deploy using the included [`render.yaml`](file:///render.yaml).
+2. In the Render Dashboard -> **Environment Variables**, add:
+   - `MONGODB_URI`: `mongodb+srv://admin:<password>@cluster0.xxxxx.mongodb.net/cropguardian?retryWrites=true&w=majority`
+   - `NODE_ENV`: `production`
+3. Build Command: `cd backend && npm install && cd ../frontend && npm install && npm run build`
+4. Start Command: `node backend/server.js`
+
+#### **Option C: Vercel (1-Click Static + Serverless / Standalone)**
 1. Fork or import this repository into your Vercel account.
-2. Root directory: `./` (or `frontend/`).
-3. Build command: `cd frontend && npm install && npm run build`
-4. Output directory: `frontend/dist`
-5. Click **Deploy**. The application comes equipped with a high-fidelity client-side agricultural mock engine and SPA routing rewrite so all pages, simulations, and features work seamlessly with zero setup!
-
-### Option 2: Render (Full-Stack Blueprint)
-1. Click the **[Deploy to Render](https://render.com/deploy?repo=https://github.com/ishanarora0901/kisan-crop-guardian)** button.
-2. Click **Apply** to spin up the Node.js API and static frontend from `render.yaml`.
+2. Build command: `cd frontend && npm install && npm run build`
+3. Output directory: `frontend/dist`
+4. Deployed URL automatically routes API requests and features seamless client-side simulated data fallback.
 
 ---
 

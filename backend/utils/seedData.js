@@ -16,6 +16,11 @@ const BlockchainService = require('../services/blockchainService');
 
 const seedDatabase = async () => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      console.log('ℹ️ MongoDB not connected; skipping database seed.');
+      return;
+    }
+
     console.log('🌱 Checking / Seeding AI Crop Guardian Agricultural Database...');
 
     // Clear existing data for fresh seed if needed

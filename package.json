@@ -6,11 +6,12 @@
     "install:backend": "cd backend && npm install",
     "install:frontend": "cd frontend && npm install",
     "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "server": "cd backend && npm start",
+    "server": "cd backend && node server.js",
     "client": "cd frontend && npm run dev",
-    "build": "cd frontend && npm install && npm run build",
+    "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
+    "build:frontend": "cd frontend && npm install && npm run build",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node backend/server.js",
     "test:system": "cd backend && node utils/verifySystem.js"
   },
   "dependencies": {

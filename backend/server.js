@@ -2,10 +2,12 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
+const mongoose = require('mongoose');
 const { Server } = require('socket.io');
 require('dotenv').config();
 
-const { connectDB } = require('./config/db');
+const { connectDB, isDBConnected } = require('./config/db');
 const { seedDatabase } = require('./utils/seedData');
 const errorHandler = require('./middleware/errorHandler');
 
@@ -43,13 +45,37 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Static uploads folder
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  try {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  } catch (err) {
+    console.warn('Uploads directory creation notice:', err.message);
+  }
+}
+app.use('/uploads', express.static(uploadsDir));
+
+// Locate Frontend Static Build directory (built at build-time)
+const possibleDistPaths = [
+  path.join(__dirname, '../frontend/dist'),
+  path.join(__dirname, 'frontend/dist'),
+  path.join(__dirname, 'dist'),
+  path.join(__dirname, 'public'),
+  path.join(process.cwd(), 'frontend/dist'),
+  path.join(process.cwd(), 'dist'),
+];
+
+let frontendDist = possibleDistPaths.find((p) => fs.existsSync(p) && fs.existsSync(path.join(p, 'index.html'))) || null;
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
+  const dbConnected = mongoose.connection.readyState === 1 || isDBConnected();
   res.json({
     status: 'online',
-    service: 'AI Crop Guardian Backend API',
+    service: 'AI Crop Guardian Platform API',
+    database: dbConnected ? 'connected' : 'connecting_or_standalone',
+    mongoUriConfigured: Boolean(process.env.MONGODB_URI && !process.env.MONGODB_URI.includes('username:password') && !process.env.MONGODB_URI.includes('<password>')),
+    frontendMounted: Boolean(frontendDist),
     timestamp: new Date().toISOString(),
     version: '1.0.0',
   });
@@ -92,17 +118,18 @@ io.on('connection', (socket) => {
   });
 });
 
-// Serve frontend static build if available in production
-const frontendDist = path.join(__dirname, '../frontend/dist');
-const fs = require('fs');
-if (fs.existsSync(frontendDist)) {
+// Serve frontend static build if available (Image-build time Vite bundle)
+if (frontendDist) {
+  console.log(`📦 Serving compiled frontend from: ${frontendDist}`);
   app.use(express.static(frontendDist));
   app.get('*', (req, res, next) => {
-    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads') || req.path.startsWith('/socket.io')) {
       return next();
     }
     res.sendFile(path.join(frontendDist, 'index.html'));
   });
+} else {
+  console.log('ℹ️ Frontend dist not detected at startup. Backend running in standalone API mode.');
 }
 
 // Global Error Handler
@@ -111,17 +138,23 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
-  await connectDB();
-  await seedDatabase();
-
+  // Bind and open port immediately so cloud container health checks pass instantly
   if (process.env.NODE_ENV !== 'test') {
     server.listen(PORT, () => {
       console.log(`\n======================================================`);
-      console.log(`🌾 AI Crop Guardian Backend Running on Port ${PORT}`);
-      console.log(`📡 REST API Endpoint: http://localhost:${PORT}/api/health`);
-      console.log(`🌐 Role Accounts Ready (Farmer, Specialist, Admin)`);
+      console.log(`🌾 AI Crop Guardian Service Running on Port ${PORT}`);
+      console.log(`📡 Health Check Endpoint: http://localhost:${PORT}/api/health`);
+      console.log(`🌐 Frontend Static Serving: ${frontendDist ? 'ENABLED (Production Build)' : 'API Mode Only'}`);
       console.log(`======================================================\n`);
     });
+  }
+
+  // Asynchronously initialize database and seeds without delaying port opening
+  try {
+    await connectDB();
+    await seedDatabase();
+  } catch (dbErr) {
+    console.warn(`⚠️ Database initialization notice: ${dbErr.message}`);
   }
 };
 
@@ -130,3 +163,4 @@ if (require.main === module) {
 }
 
 module.exports = { app, server, startServer };
+

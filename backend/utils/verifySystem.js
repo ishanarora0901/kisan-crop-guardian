@@ -1,4 +1,5 @@
 const axios = require('axios');
+const http = require('http');
 
 const BASE_URL = 'http://localhost:5000/api';
 
@@ -9,6 +10,7 @@ async function runTests() {
 
   let passed = 0;
   let failed = 0;
+  let serverInstance = null;
 
   function assert(name, condition, details = '') {
     if (condition) {
@@ -21,6 +23,16 @@ async function runTests() {
   }
 
   try {
+    // Check if server is running; if not, spin it up
+    try {
+      await axios.get(`${BASE_URL}/health`, { timeout: 1500 });
+    } catch {
+      console.log('📡 Starting internal test server on port 5000...');
+      const { startServer } = require('../server');
+      await startServer();
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+    }
+
     // 1. Health check
     const health = await axios.get(`${BASE_URL}/health`);
     assert('Backend Health Endpoint', health.data.status === 'online', `(Service: ${health.data.service})`);
@@ -169,9 +181,12 @@ async function runTests() {
     console.log('\n========================================================');
     console.log(`🎉 ALL TESTS COMPLETED: ${passed} PASSED, ${failed} FAILED`);
     console.log('========================================================\n');
+    process.exit(failed > 0 ? 1 : 0);
   } catch (err) {
     console.error('❌ Test execution error:', err.response?.data || err.message);
+    process.exit(1);
   }
 }
 
 runTests();
+
