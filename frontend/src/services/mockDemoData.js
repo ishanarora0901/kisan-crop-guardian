@@ -978,16 +978,59 @@ export const handleMockApiRequest = async (config = {}) => {
 
   // 9. Blockchain Crop Passport
   if (url.startsWith('/passport/cycle/')) {
-    const passport = store.passports['CROP-PASS-WHEAT-2026'];
-    return respond(200, { success: true, passport });
+    const cycleId = url.replace('/passport/cycle/', '').trim();
+    const passport = (store.passports && store.passports['CROP-PASS-WHEAT-2026']) || (store.passports && Object.values(store.passports)[0]);
+    return respond(200, {
+      success: true,
+      passport,
+      isAuthentic: true,
+      merkleRoot: passport?.merkleRoot,
+      blocksCount: passport?.blocks?.length || 0,
+    });
   }
 
   if (url.startsWith('/passport/verify/')) {
-    const passportId = url.replace('/passport/verify/', '');
-    const passport = store.passports[passportId] || store.passports['CROP-PASS-WHEAT-2026'];
+    const passportId = url.replace('/passport/verify/', '').trim();
+    const passport = (store.passports && store.passports[passportId]) || 
+                     (store.passports && store.passports['CROP-PASS-WHEAT-2026']) ||
+                     (store.passports && Object.values(store.passports)[0]);
+
+    const summary = {
+      passportId: passport?.passportId || passportId || 'CROP-PASS-WHEAT-2026',
+      cropName: passport?.cropName || 'Wheat',
+      variety: passport?.variety || 'HD-2967 High Yield',
+      season: passport?.season || 'Rabi 2024-25',
+      status: 'VERIFIED_AUTHENTIC',
+      isAuthentic: true,
+      totalVerifiedMilestones: passport?.blocks ? passport.blocks.length : 4,
+      merkleRootHash: passport?.merkleRoot || '7e28a6f3b49910d5e18c642aa0722bc13d508933b91a788e0b12741128fa15e9',
+      genesisBlockHash: passport?.blocks?.[0]?.hash || '0000a39f1c7d248b78912e569ac99201f8e6c7104b29d4900e4c5b7654a1001a',
+      latestBlockHash: passport?.blocks?.[passport.blocks.length - 1]?.hash || '0000f8901235bc456789def0123456789abcdef0123456789abcdef012345678',
+      timeline: (passport?.blocks || []).map((b) => ({
+        index: b.index,
+        timestamp: b.timestamp,
+        eventType: b.eventType,
+        title: b.eventTitle,
+        details: b.details,
+        verifiedBy: b.verifiedBy,
+        blockHash: b.hash || b.blockHash,
+      })),
+      farmDetails: {
+        name: passport?.farmName || 'Green Acres Farm - Sector 4',
+        locationName: passport?.farmLocation || 'Samrala, Ludhiana, Punjab',
+        totalAreaAcres: passport?.fieldAreaAcres || 5,
+        soilType: 'Alluvial Loam',
+      },
+      farmerDetails: {
+        name: passport?.farmerName || 'Harpreet Singh',
+        contact: '+91 98765 43210',
+      },
+    };
+
     return respond(200, {
       success: true,
       verified: true,
+      summary,
       passport,
       verificationTime: new Date().toISOString(),
       ledgerNode: 'Consensus Node #04 (PAU Extension Cluster)',
@@ -996,7 +1039,7 @@ export const handleMockApiRequest = async (config = {}) => {
 
   if (url.startsWith('/passport/') && url.endsWith('/block') && method === 'post') {
     const passportId = url.split('/')[2];
-    const passport = store.passports[passportId] || store.passports['CROP-PASS-WHEAT-2026'];
+    const passport = (store.passports && store.passports[passportId]) || (store.passports && store.passports['CROP-PASS-WHEAT-2026']);
     const prevBlock = passport.blocks[passport.blocks.length - 1];
     const newBlock = {
       index: passport.blocks.length,
@@ -1004,7 +1047,7 @@ export const handleMockApiRequest = async (config = {}) => {
       eventType: data.eventType || 'FARM_OPERATION_LOGGED',
       eventTitle: data.eventTitle || 'Field Action Verified',
       details: data.details || {},
-      previousHash: prevBlock ? prevBlock.hash : '0000000000000000000000000000000000000000000000000000000000000000',
+      previousHash: prevBlock ? (prevBlock.hash || prevBlock.blockHash) : '0000000000000000000000000000000000000000000000000000000000000000',
       hash: '0000' + Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2),
       verifiedBy: currentUser.name + ' (' + currentUser.role + ')',
     };
@@ -1025,6 +1068,7 @@ export const handleMockApiRequest = async (config = {}) => {
         totalDiseaseScans: 3890,
         activeHighRiskAlerts: 14,
         totalPassportsMinted: 843,
+        totalBlockchainPassports: 843,
         diseaseBreakdown: [
           { name: 'Wheat Yellow Rust', count: 320, percentage: 38 },
           { name: 'Mustard Blight', count: 180, percentage: 22 },
@@ -1058,9 +1102,22 @@ export const handleMockApiRequest = async (config = {}) => {
   }
 
   if (url === '/admin/blockchain-ledger') {
+    const wheatBlocks = (store.passports && store.passports['CROP-PASS-WHEAT-2026']?.blocks) || [];
+    const recentBlocks = wheatBlocks.map((b) => ({
+      index: b.index,
+      cropName: 'Wheat (HD-2967)',
+      passportId: 'CROP-PASS-WHEAT-2026',
+      eventTitle: b.eventTitle,
+      verifiedBy: b.verifiedBy,
+      blockHash: b.hash || b.blockHash,
+    }));
+
     return respond(200, {
       success: true,
-      ledger: store.passports['CROP-PASS-WHEAT-2026'].blocks,
+      totalPassports: 843,
+      totalMinedBlocks: 3420 + wheatBlocks.length,
+      recentBlocks,
+      ledger: wheatBlocks,
     });
   }
 
