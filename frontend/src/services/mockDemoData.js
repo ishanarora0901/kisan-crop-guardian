@@ -871,37 +871,66 @@ export const handleMockApiRequest = async (config = {}) => {
 
   // 7. What-If Simulator
   if (url === '/simulator/compare' && method === 'post') {
-    const { cropA = 'Wheat', cropB = 'Mustard', acres = 5, waterPrice = 1, fertilizerRate = 1 } = data;
+    const { cropA = 'Wheat', cropB = 'Mustard', farmAreaAcres = 5 } = data || {};
+    const acres = Number(farmAreaAcres) || 5;
+
+    const CROP_BENCHMARKS = {
+      Wheat: { yieldPerAcre: 10.6, costPerAcre: 14400, marketPricePerQuintal: 2450, diseaseRisk: 62, weatherRisk: 45, waterRequirement: 'High (4-5 irrigations)' },
+      Mustard: { yieldPerAcre: 8.2, costPerAcre: 10800, marketPricePerQuintal: 5650, diseaseRisk: 31, weatherRisk: 28, waterRequirement: 'Low (1-2 irrigations)' },
+      Rice: { yieldPerAcre: 18.5, costPerAcre: 19500, marketPricePerQuintal: 2320, diseaseRisk: 58, weatherRisk: 52, waterRequirement: 'Very High (Continuous Flooding)' },
+      Cotton: { yieldPerAcre: 7.8, costPerAcre: 18200, marketPricePerQuintal: 7100, diseaseRisk: 65, weatherRisk: 48, waterRequirement: 'Medium (3-4 irrigations)' },
+      Maize: { yieldPerAcre: 16.0, costPerAcre: 13500, marketPricePerQuintal: 2150, diseaseRisk: 38, weatherRisk: 35, waterRequirement: 'Medium (3 irrigations)' },
+      Potato: { yieldPerAcre: 95.0, costPerAcre: 48000, marketPricePerQuintal: 950, diseaseRisk: 72, weatherRisk: 55, waterRequirement: 'High (Frequent light irrigations)' },
+      Tomato: { yieldPerAcre: 120.0, costPerAcre: 52000, marketPricePerQuintal: 850, diseaseRisk: 68, weatherRisk: 50, waterRequirement: 'High (Drip fertigation)' },
+    };
+
+    const dataA = CROP_BENCHMARKS[cropA] || CROP_BENCHMARKS.Wheat;
+    const dataB = CROP_BENCHMARKS[cropB] || CROP_BENCHMARKS.Mustard;
+
+    const yieldA = Math.round(dataA.yieldPerAcre * acres);
+    const costA = Math.round(dataA.costPerAcre * acres);
+    const revenueA = Math.round(yieldA * dataA.marketPricePerQuintal);
+    const profitA = revenueA - costA;
+
+    const yieldB = Math.round(dataB.yieldPerAcre * acres);
+    const costB = Math.round(dataB.costPerAcre * acres);
+    const revenueB = Math.round(yieldB * dataB.marketPricePerQuintal);
+    const profitB = revenueB - costB;
+
+    const simResult = {
+      cropA: {
+        name: cropA,
+        expectedYield: `${yieldA} Quintals`,
+        estimatedCost: costA,
+        expectedRevenue: revenueA,
+        expectedProfit: profitA,
+        profitPerAcre: Math.round(profitA / acres),
+        diseaseRisk: dataA.diseaseRisk,
+        weatherRisk: dataA.weatherRisk,
+        waterRequirement: dataA.waterRequirement,
+      },
+      cropB: {
+        name: cropB,
+        expectedYield: `${yieldB} Quintals`,
+        estimatedCost: costB,
+        expectedRevenue: revenueB,
+        expectedProfit: profitB,
+        profitPerAcre: Math.round(profitB / acres),
+        diseaseRisk: dataB.diseaseRisk,
+        weatherRisk: dataB.weatherRisk,
+        waterRequirement: dataB.waterRequirement,
+      },
+      comparison: {
+        profitDifference: profitB - profitA,
+        recommendedChoice: profitB > profitA ? cropB : cropA,
+        aiRecommendationSummary: `Based on current soil telemetry and seasonal models, ${cropB} offers higher projected net profit (₹${profitB.toLocaleString()} vs ₹${profitA.toLocaleString()}) with ${dataB.diseaseRisk}% disease risk compared to ${dataA.diseaseRisk}% for ${cropA}.`,
+        disclaimer: 'Estimates are based on historical regional averages and AI agro-economic sensitivity models.',
+      },
+    };
+
     return respond(200, {
       success: true,
-      simulation: {
-        optionA: {
-          cropName: cropA,
-          acres: Number(acres),
-          expectedYieldQuintals: Number(acres) * 10.6,
-          totalRevenue: Number(acres) * 26000,
-          totalCost: Number(acres) * 15000 * fertilizerRate,
-          netProfit: Number(acres) * (26000 - 15000 * fertilizerRate),
-          roiPercentage: ((26000 - 15000 * fertilizerRate) / (15000 * fertilizerRate)) * 100,
-          diseaseResilienceScore: '7.8 / 10',
-          waterRequirementM3: Number(acres) * 450 * waterPrice,
-          climateRiskIndex: 'Medium',
-        },
-        optionB: {
-          cropName: cropB,
-          acres: Number(acres),
-          expectedYieldQuintals: Number(acres) * 6.2,
-          totalRevenue: Number(acres) * 32000,
-          totalCost: Number(acres) * 13500 * fertilizerRate,
-          netProfit: Number(acres) * (32000 - 13500 * fertilizerRate),
-          roiPercentage: ((32000 - 13500 * fertilizerRate) / (13500 * fertilizerRate)) * 100,
-          diseaseResilienceScore: '8.4 / 10',
-          waterRequirementM3: Number(acres) * 220 * waterPrice,
-          climateRiskIndex: 'Low-Medium',
-        },
-        recommendation:
-          'Option B provides higher net margins per acre and consumes ~50% less irrigation water, offering optimal climate-risk hedging under forecasted dry spells.',
-      },
+      simulation: simResult,
     });
   }
 
