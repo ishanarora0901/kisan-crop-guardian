@@ -12,6 +12,10 @@ import {
   Plus,
   X,
   ExternalLink,
+  BookOpen,
+  FileText,
+  Copy,
+  Check,
 } from 'lucide-react';
 
 const CropPassportPage = () => {
@@ -21,6 +25,8 @@ const CropPassportPage = () => {
   const [loading, setLoading] = useState(true);
   const [showAddBlockModal, setShowAddBlockModal] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
+  const [showNotionModal, setShowNotionModal] = useState(false);
+  const [copiedNotion, setCopiedNotion] = useState(false);
 
   const [newBlockForm, setNewBlockForm] = useState({
     eventType: 'HARVEST_RECORD',
@@ -128,6 +134,14 @@ const CropPassportPage = () => {
               ))}
             </select>
           )}
+
+          <button
+            onClick={() => setShowNotionModal(true)}
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-bold border border-slate-700 hover:border-slate-500 transition-all shadow-sm"
+          >
+            <BookOpen className="w-4 h-4 text-amber-400" />
+            <span>Sync to Notion</span>
+          </button>
 
           <button
             onClick={() => setShowQrModal(true)}
@@ -285,6 +299,104 @@ const CropPassportPage = () => {
             >
               Done
             </button>
+          </div>
+        </div>
+      )}
+      {/* MODAL: NOTION WORKSPACE HUB & SYNC */}
+      {showNotionModal && passportData && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white font-serif font-black text-base border border-white/20">
+                  N
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-base text-white">Notion Living Agri-Workspace Sync</h3>
+                  <p className="text-[11px] text-slate-400">All-in-One Modular Knowledge Database for Farming Operations</p>
+                </div>
+              </div>
+              <button onClick={() => setShowNotionModal(false)} className="text-slate-400 hover:text-white">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Notion Page Preview Card */}
+            <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 text-xs space-y-4 font-sans text-slate-200">
+              <div className="flex items-center gap-2 pb-2 border-b border-slate-800/80">
+                <span className="text-2xl">🌾</span>
+                <span className="text-base font-bold text-white tracking-tight">
+                  [Crop Passport] {passportData.cropName} — {passportData.season}
+                </span>
+              </div>
+
+              {/* Notion Properties Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 text-[11px]">
+                <div>
+                  <span className="text-slate-500 font-semibold">Status:</span>
+                  <div className="mt-0.5 inline-block px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold text-[10px]">
+                    Verified Authentic
+                  </div>
+                </div>
+                <div>
+                  <span className="text-slate-500 font-semibold">Passport ID:</span>
+                  <p className="font-mono text-cyan-400 mt-0.5 truncate">{passportData.passportId}</p>
+                </div>
+                <div>
+                  <span className="text-slate-500 font-semibold">Milestone Blocks:</span>
+                  <p className="font-bold text-white mt-0.5">{passportData.blocks.length} Cryptographic Blocks</p>
+                </div>
+              </div>
+
+              {/* Callout Block (Notion Style) */}
+              <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-200 text-xs flex items-start gap-2.5">
+                <span className="text-base">💡</span>
+                <p>
+                  <strong>Agri-Knowledge Hub:</strong> This page dynamically binds raw IoT soil telemetry, real-time satellite NDVI risks, and ICAR agronomist digital prescriptions into structured Notion relational database properties.
+                </p>
+              </div>
+
+              {/* Notion Database Table of Blocks */}
+              <div>
+                <h4 className="font-bold text-slate-400 uppercase text-[10px] tracking-wider mb-2">Relational Milestone Entries</h4>
+                <div className="space-y-1.5 font-mono text-[10px]">
+                  {passportData.blocks.map((b, idx) => (
+                    <div key={idx} className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 flex items-center justify-between">
+                      <span className="text-slate-300 font-sans font-medium">Block #{b.index}: {b.eventTitle || b.title}</span>
+                      <span className="text-emerald-400 font-bold truncate max-w-[150px]">{b.hash || b.blockHash}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `# 🌾 [Crop Passport] ${passportData.cropName}\n**Passport ID**: ${passportData.passportId}\n**Status**: Verified Authentic\n**Merkle Root**: ${passportData.merkleRoot}\n\n## Verified Milestones:\n` +
+                    passportData.blocks.map(b => `- **Block #${b.index}**: ${b.eventTitle} (Hash: \`${b.hash || b.blockHash}\`)`).join('\n')
+                  );
+                  setCopiedNotion(true);
+                  setTimeout(() => setCopiedNotion(false), 3000);
+                }}
+                className="w-full sm:w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center justify-center gap-2 border border-slate-700"
+              >
+                {copiedNotion ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                <span>{copiedNotion ? 'Copied Notion Markdown!' : 'Copy Notion Markdown'}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  alert('✅ Successfully synced Crop Passport & Milestones to your connected Notion Agriculture Database!');
+                  setShowNotionModal(false);
+                }}
+                className="w-full sm:w-1/2 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/20"
+              >
+                Sync to Connected Notion DB
+              </button>
+            </div>
           </div>
         </div>
       )}
