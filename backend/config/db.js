@@ -33,21 +33,32 @@ const connectDB = async () => {
     console.log('======================================================================\n');
   }
 
-  // 2. In local development or fallback mode, attempt In-Memory MongoDB if available
-  if (process.env.NODE_ENV !== 'production') {
+  // 2. In local development only, attempt In-Memory MongoDB if explicitly requested or running locally
+  const isCloudOrProd = process.env.NODE_ENV === 'production' || 
+                        process.env.RENDER || 
+                        process.env.ZEABUR_WEB_URL || 
+                        process.env.RAILWAY_ENVIRONMENT ||
+                        process.env.VERCEL;
+
+  if (!isCloudOrProd && (process.env.NODE_ENV === 'development' || process.env.USE_IN_MEMORY_DB === 'true')) {
     try {
-      console.log('🚀 Attempting to initialize In-Memory MongoDB Server for local demo...');
+      console.log('🚀 Attempting to initialize In-Memory MongoDB Server for local demo (5s timeout)...');
       const { MongoMemoryServer } = require('mongodb-memory-server');
-      if (!mongod) {
-        mongod = await MongoMemoryServer.create();
-      }
+      
+      // Enforce a strict 5-second timeout so binary downloads never hang the boot process
+      const createPromise = MongoMemoryServer.create();
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('In-Memory MongoDB creation timed out after 5s')), 5000)
+      );
+
+      mongod = await Promise.race([createPromise, timeoutPromise]);
       const uri = mongod.getUri();
-      const conn = await mongoose.connect(uri);
+      const conn = await mongoose.connect(uri, { serverSelectionTimeoutMS: 4000 });
       isConnected = true;
       console.log(`✅ In-Memory MongoDB Connected at: ${uri}`);
       return conn;
     } catch (memErr) {
-      console.warn(`⚠️ In-Memory MongoDB unavailable: ${memErr.message}`);
+      console.warn(`⚠️ In-Memory MongoDB bypassed (${memErr.message}). Running in Standalone Resilient Mode.`);
     }
   }
 

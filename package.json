@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "description": "AI Crop Guardian — Intelligent Agriculture Decision-Support & Proactive Risk Intelligence Platform (Full-Stack MERN)",
   "scripts": {
-    "install:backend": "cd backend && npm install",
-    "install:frontend": "cd frontend && npm install",
-    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "server": "cd backend && node server.js",
-    "client": "cd frontend && npm run dev",
-    "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
-    "build:frontend": "cd frontend && npm install && npm run build",
+    "install:backend": "npm --prefix backend install",
+    "install:frontend": "npm --prefix frontend install",
+    "install:all": "npm install && npm --prefix backend install && npm --prefix frontend install",
+    "server": "npm --prefix backend start",
+    "client": "npm --prefix frontend run dev",
+    "build": "npm --prefix backend install && npm --prefix frontend install && npm --prefix frontend run build",
+    "build:frontend": "npm --prefix frontend install && npm --prefix frontend run build",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "start": "node backend/server.js",
-    "test:system": "cd backend && node utils/verifySystem.js"
+    "test:system": "node backend/utils/verifySystem.js"
   },
   "dependencies": {
     "axios": "^1.7.9",
