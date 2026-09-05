@@ -58,15 +58,48 @@ const cropCycleSchema = new mongoose.Schema(
     },
     previousCrop: {
       type: String,
-      default: 'Rice (Basmati)',
+      default: '',
+    },
+    previousCropVariety: {
+      type: String,
+      default: '',
+    },
+    previousYieldQuintals: {
+      type: Number,
+      default: 0,
+    },
+    previousRevenue: {
+      type: Number,
+      default: 0,
+    },
+    previousCost: {
+      type: Number,
+      default: 0,
+    },
+    previousProfit: {
+      type: Number,
+      default: 0,
     },
     previousDiseases: {
       type: [String],
-      default: ['Fungal Leaf Rust'],
+      default: [],
+    },
+    previousProblems: {
+      type: String,
+      default: '',
+    },
+    irrigationMethod: {
+      type: String,
+      default: 'Tube-well with Drip / Sprinkler',
+    },
+    currentConcerns: {
+      type: String,
+      default: '',
     },
     seedInformation: {
-      seedCompany: { type: String, default: 'National Seeds Corporation' },
-      seedTreatment: { type: String, default: 'Carbendazim 2g/kg' },
+      seedCompany: { type: String, default: '' },
+      seedTreatment: { type: String, default: 'None' },
+      seedSource: { type: String, default: 'Certified Govt Seeds' },
       seedRateKgPerAcre: { type: Number, default: 40 },
     },
     fertilizerUsage: [

@@ -55,7 +55,7 @@ const AppLayout = ({ children, hideSidebar = false }) => {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen bg-sage-50 text-slate-800 flex flex-col selection:bg-forest-800 selection:text-white">
       <Navbar />
       <div className="flex-1 flex flex-col md:flex-row">
         {user && !hideSidebar && <Sidebar />}

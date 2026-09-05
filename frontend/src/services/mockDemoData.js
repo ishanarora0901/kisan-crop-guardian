@@ -374,7 +374,7 @@ const getInitialState = () => ({
           details: { crop: 'Wheat', variety: 'HD-2967', season: 'Rabi 2024-25', acres: 5 },
           previousHash: '0000000000000000000000000000000000000000000000000000000000000000',
           hash: '0000a39f1c7d248b78912e569ac99201f8e6c7104b29d4900e4c5b7654a1001a',
-          verifiedBy: 'AI Crop Guardian Consensus Node',
+          verifiedBy: 'Kisan Crop Guardian Consensus Node',
         },
         {
           index: 1,
@@ -484,7 +484,7 @@ export const handleMockApiRequest = async (config = {}) => {
   if (url === '/health' || url === '') {
     return respond(200, {
       status: 'online',
-      service: 'AI Crop Guardian Standalone Demo Mode',
+      service: 'Kisan Crop Guardian Standalone Demo Mode',
       timestamp: new Date().toISOString(),
       version: '1.0.0 (Client-Side High Fidelity)',
     });

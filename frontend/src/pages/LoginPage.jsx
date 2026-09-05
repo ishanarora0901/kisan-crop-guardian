@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { Sprout, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import QuickLoginBanner from '../components/common/QuickLoginBanner';
 
 const LoginPage = () => {
   const { login } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -40,49 +42,49 @@ const LoginPage = () => {
         <QuickLoginBanner />
       </div>
 
-      <div className="w-full max-w-md glass-panel p-8 rounded-3xl shadow-2xl">
+      <div className="w-full max-w-md glass-panel p-8 rounded-3xl shadow-organic-lg">
         <div className="text-center mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-emerald-500/20">
+          <div className="w-12 h-12 rounded-2xl bg-forest-800 flex items-center justify-center mx-auto mb-3 shadow-md shadow-forest-800/20">
             <Sprout className="w-6 h-6 text-white" />
           </div>
-          <h2 className="text-2xl font-extrabold text-white">Sign in to Crop Guardian</h2>
-          <p className="text-xs text-slate-400 mt-1">Access your proactive farm risk center & crop passport</p>
+          <h2 className="text-2xl font-extrabold text-forest-950">{t('signInTitle')}</h2>
+          <p className="text-xs text-slate-500 mt-1">{t('signInSubtitle')}</p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
             <span>{error}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-300 mb-1">Email Address</label>
+            <label className="block text-xs font-bold text-slate-700 mb-1">{t('emailLabel')}</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+              <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="farmer@cropguardian.ai"
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-800 focus:border-emerald-500 focus:outline-none text-xs text-white placeholder-slate-500"
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white border border-slate-300 focus:border-forest-800 focus:ring-1 focus:ring-forest-800 focus:outline-none text-xs text-slate-900 placeholder-slate-400 shadow-sm"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-300 mb-1">Password</label>
+            <label className="block text-xs font-bold text-slate-700 mb-1">{t('passwordLabel')}</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+              <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-800 focus:border-emerald-500 focus:outline-none text-xs text-white placeholder-slate-500"
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white border border-slate-300 focus:border-forest-800 focus:ring-1 focus:ring-forest-800 focus:outline-none text-xs text-slate-900 placeholder-slate-400 shadow-sm"
               />
             </div>
           </div>
@@ -90,17 +92,17 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 transition-all hover:scale-[1.02] disabled:opacity-50"
+            className="w-full py-3 rounded-xl bg-forest-800 hover:bg-forest-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-forest-800/20 transition-all hover:scale-[1.01] disabled:opacity-50"
           >
-            {loading ? 'Authenticating...' : 'Sign In to Dashboard'}
+            {loading ? t('authenticating') : t('signInBtn')}
             <ArrowRight className="w-4 h-4" />
           </button>
         </form>
 
-        <div className="mt-6 text-center text-xs text-slate-400">
-          Don't have an account?{' '}
-          <Link to="/register" className="text-emerald-400 font-bold hover:underline">
-            Register your Farm
+        <div className="mt-6 text-center text-xs text-slate-500">
+          {t('noAccount')}{' '}
+          <Link to="/register" className="text-forest-800 font-bold hover:underline">
+            {t('registerLink')}
           </Link>
         </div>
       </div>

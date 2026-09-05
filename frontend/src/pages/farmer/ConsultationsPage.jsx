@@ -108,22 +108,22 @@ const ConsultationsPage = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs uppercase font-bold text-rose-400 tracking-wider">
+            <span className="text-xs uppercase font-black text-rose-900 tracking-wider">
               Agricultural Expert Advisory Network
             </span>
-            <span className="px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-bold">
+            <span className="px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-900 border border-rose-300 text-[10px] font-bold">
               ICAR Verified
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Specialist Consultations</h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <h1 className="text-2xl sm:text-3xl font-black text-forest-950 tracking-tight">Specialist Consultations</h1>
+          <p className="text-xs text-slate-600 mt-1 font-medium">
             Connect directly with plant pathologists, soil scientists, and certified agronomists for verified guidance.
           </p>
         </div>
 
         <button
           onClick={() => setShowNewModal(true)}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-extrabold shadow-lg shadow-rose-600/20 transition-all hover:scale-105"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-700 hover:bg-rose-600 text-white text-xs font-extrabold shadow-md shadow-rose-700/20 transition-all hover:scale-105"
         >
           <Plus className="w-4 h-4" />
           <span>New Consultation Request</span>
@@ -134,10 +134,10 @@ const ConsultationsPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* LEFT COLUMN: CONSULTATION LIST */}
         <div className="lg:col-span-4 space-y-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 px-1">Active Consultations</h3>
+          <h3 className="text-xs font-black uppercase tracking-wider text-slate-600 px-1">Active Consultations</h3>
 
           {consultations.length === 0 ? (
-            <div className="glass-panel p-6 rounded-2xl text-center text-xs text-slate-400">
+            <div className="glass-panel p-6 rounded-2xl text-center text-xs text-slate-600 border border-sage-200">
               No active consultation requests found. Click 'New Consultation Request' to get started.
             </div>
           ) : (
@@ -147,26 +147,26 @@ const ConsultationsPage = () => {
                 onClick={() => setSelectedConsultation(item)}
                 className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                   selectedConsultation?._id === item._id
-                    ? 'bg-slate-800/90 border-rose-500/50 shadow-md shadow-rose-500/5'
-                    : 'glass-panel hover:bg-slate-900/90'
+                    ? 'bg-rose-50/80 border-2 border-rose-300 shadow-md shadow-rose-500/5'
+                    : 'bg-white hover:bg-sage-50 border border-sage-200 shadow-sm'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-extrabold text-sm text-white truncate max-w-[200px]">{item.subject}</span>
+                  <span className="font-black text-sm text-forest-950 truncate max-w-[200px]">{item.subject}</span>
                   <span
-                    className={`text-[9px] font-black px-2 py-0.5 rounded ${
+                    className={`text-[9px] font-black px-2 py-0.5 rounded-full border ${
                       item.status === 'PRESCRIBED'
-                        ? 'bg-emerald-500/20 text-emerald-300'
-                        : 'bg-amber-500/20 text-amber-300'
+                        ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                        : 'bg-amber-100 text-amber-900 border-amber-300'
                     }`}
                   >
                     {item.status}
                   </span>
                 </div>
-                <p className="text-xs text-slate-400">
-                  Specialist: <strong className="text-slate-200">{item.specialist?.name || 'Dr. Ramesh Sharma'}</strong>
+                <p className="text-xs text-slate-600 font-medium">
+                  Specialist: <strong className="text-forest-900 font-bold">{item.specialist?.name || 'Dr. Ramesh Sharma'}</strong>
                 </p>
-                <p className="text-[10px] text-slate-500 mt-1">{new Date(item.createdAt).toLocaleDateString()}</p>
+                <p className="text-[10px] text-slate-500 font-medium mt-1">{new Date(item.createdAt).toLocaleDateString()}</p>
               </div>
             ))
           )}
@@ -175,18 +175,18 @@ const ConsultationsPage = () => {
         {/* RIGHT COLUMN: ACTIVE THREAD & PRESCRIPTION */}
         <div className="lg:col-span-8 space-y-6">
           {selectedConsultation ? (
-            <div className="glass-panel p-6 rounded-3xl space-y-6">
+            <div className="glass-panel p-6 rounded-3xl space-y-6 border border-sage-200 shadow-sm">
               {/* Header Info */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-sage-200">
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-black text-lg text-white">{selectedConsultation.subject}</h3>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                    <h3 className="font-black text-lg text-forest-950">{selectedConsultation.subject}</h3>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 border border-slate-200">
                       {selectedConsultation.priority} PRIORITY
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    Assigned to: <strong className="text-rose-400">{selectedConsultation.specialist?.name}</strong> ·{' '}
+                  <p className="text-xs text-slate-600 mt-0.5 font-medium">
+                    Assigned to: <strong className="text-rose-800 font-bold">{selectedConsultation.specialist?.name}</strong> ·{' '}
                     Crop: {selectedConsultation.cropCycle?.cropName}
                   </p>
                 </div>
@@ -194,10 +194,10 @@ const ConsultationsPage = () => {
 
               {/* SPECIALIST OFFICIAL PRESCRIPTION CARD (IF ISSUED) */}
               {selectedConsultation.specialistDiagnosis && (
-                <div className="p-6 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 shadow-xl space-y-3.5">
+                <div className="p-6 rounded-2xl bg-emerald-50/80 border-2 border-emerald-300 shadow-sm space-y-3.5">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-emerald-400 font-extrabold text-sm">
-                      <ShieldCheck className="w-5 h-5" />
+                    <div className="flex items-center gap-2 text-forest-900 font-black text-sm">
+                      <ShieldCheck className="w-5 h-5 text-forest-800" />
                       <span>Official Agricultural Prescription & Advisory</span>
                     </div>
                     <VoiceSpeaker
@@ -207,27 +207,27 @@ const ConsultationsPage = () => {
 
                   <div className="text-xs space-y-2">
                     <div>
-                      <span className="text-slate-400 font-bold">Confirmed Specialist Diagnosis:</span>
-                      <p className="text-sm font-extrabold text-white mt-0.5">
+                      <span className="text-slate-600 font-bold">Confirmed Specialist Diagnosis:</span>
+                      <p className="text-sm font-black text-forest-950 mt-0.5">
                         {selectedConsultation.specialistDiagnosis}
                       </p>
                     </div>
 
                     <div>
-                      <span className="text-slate-400 font-bold">Clinical Advisory & Action Plan:</span>
-                      <p className="text-slate-200 mt-0.5 leading-relaxed">
+                      <span className="text-slate-600 font-bold">Clinical Advisory & Action Plan:</span>
+                      <p className="text-slate-800 mt-0.5 leading-relaxed font-medium">
                         {selectedConsultation.professionalAdvice}
                       </p>
                     </div>
 
                     {selectedConsultation.prescriptionDetails?.chemicalTreatments?.length > 0 && (
-                      <div className="mt-3 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
-                        <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block mb-1">
+                      <div className="mt-3 p-3.5 rounded-xl bg-white border border-emerald-200 text-slate-800 shadow-sm">
+                        <span className="text-[10px] font-black text-forest-800 uppercase tracking-wider block mb-1">
                           Chemical Spray Protocol:
                         </span>
                         {selectedConsultation.prescriptionDetails.chemicalTreatments.map((chem, idx) => (
-                          <div key={idx} className="text-slate-300">
-                            <strong>{chem.chemicalName}</strong> — Dosage: {chem.dosagePerAcre} (Spray interval:{' '}
+                          <div key={idx} className="text-slate-800 font-medium">
+                            <strong className="text-forest-950 font-bold">{chem.chemicalName}</strong> — Dosage: {chem.dosagePerAcre} (Spray interval:{' '}
                             {chem.sprayIntervalDays} days)
                           </div>
                         ))}
@@ -239,7 +239,7 @@ const ConsultationsPage = () => {
 
               {/* MESSAGES THREAD */}
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3">
+                <h4 className="font-black text-xs uppercase tracking-wider text-slate-600 mb-3">
                   Consultation Messages Thread
                 </h4>
                 <div className="space-y-3 max-h-72 overflow-y-auto pr-2">
@@ -250,11 +250,11 @@ const ConsultationsPage = () => {
                         key={idx}
                         className={`p-3.5 rounded-2xl text-xs max-w-lg ${
                           isFarmer
-                            ? 'bg-slate-800/90 ml-auto border border-slate-700 text-slate-100'
-                            : 'bg-rose-950/40 mr-auto border border-rose-500/30 text-rose-100'
+                            ? 'bg-sage-100 ml-auto border border-sage-200 text-forest-950 font-medium'
+                            : 'bg-rose-50 mr-auto border border-rose-200 text-slate-900 font-medium'
                         }`}
                       >
-                        <div className="flex items-center justify-between gap-4 mb-1 text-[10px] text-slate-400 font-semibold">
+                        <div className="flex items-center justify-between gap-4 mb-1 text-[10px] text-slate-500 font-bold">
                           <span>{isFarmer ? 'You (Farmer)' : 'Dr. Ramesh Sharma (Specialist)'}</span>
                           <span>{new Date(msg.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                         </div>
@@ -271,11 +271,11 @@ const ConsultationsPage = () => {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type your message or symptom update to the specialist..."
-                    className="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:border-rose-500"
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 focus:border-rose-600 shadow-sm font-medium"
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-rose-600/20"
+                    className="px-4 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-rose-700/20"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>Send</span>
@@ -284,9 +284,9 @@ const ConsultationsPage = () => {
               </div>
             </div>
           ) : (
-            <div className="glass-panel p-12 rounded-3xl text-center text-slate-400">
-              <Stethoscope className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-              <p className="text-sm font-semibold">Select a consultation to review specialist prescription and chat</p>
+            <div className="glass-panel p-12 rounded-3xl text-center text-slate-500 border border-sage-200">
+              <Stethoscope className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+              <p className="text-sm font-bold text-slate-700">Select a consultation to review specialist prescription and chat</p>
             </div>
           )}
         </div>
@@ -294,22 +294,22 @@ const ConsultationsPage = () => {
 
       {/* MODAL: NEW CONSULTATION REQUEST */}
       {showNewModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-slate-900 border border-slate-700 rounded-3xl p-6 shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
-              <h3 className="font-extrabold text-base text-white">Request Specialist Consultation</h3>
-              <button onClick={() => setShowNewModal(false)} className="text-slate-400 hover:text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="w-full max-w-lg bg-white border border-sage-300 rounded-3xl p-6 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-sage-200 mb-4">
+              <h3 className="font-black text-base text-forest-950">Request Specialist Consultation</h3>
+              <button onClick={() => setShowNewModal(false)} className="text-slate-400 hover:text-slate-700">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleCreateRequest} className="space-y-3.5 text-xs">
               <div>
-                <label className="block font-bold text-slate-300 mb-1">Select Verified Specialist</label>
+                <label className="block font-bold text-slate-700 mb-1">Select Verified Specialist</label>
                 <select
                   value={reqForm.specialistId}
                   onChange={(e) => setReqForm({ ...reqForm, specialistId: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:border-forest-800 shadow-sm"
                 >
                   {specialists.map((s) => (
                     <option key={s._id} value={s._id}>
@@ -320,30 +320,30 @@ const ConsultationsPage = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-300 mb-1">Consultation Subject</label>
+                <label className="block font-bold text-slate-700 mb-1">Consultation Subject</label>
                 <input
                   type="text"
                   required
                   value={reqForm.subject}
                   onChange={(e) => setReqForm({ ...reqForm, subject: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 focus:border-forest-800 shadow-sm font-medium"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-300 mb-1">Describe Crop Condition & Query</label>
+                <label className="block font-bold text-slate-700 mb-1">Describe Crop Condition & Query</label>
                 <textarea
                   rows="3"
                   required
                   value={reqForm.farmerDescription}
                   onChange={(e) => setReqForm({ ...reqForm, farmerDescription: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                  className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-900 focus:border-forest-800 shadow-sm font-medium"
                 ></textarea>
               </div>
 
               <button
                 type="submit"
-                className="w-full mt-4 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold transition-all shadow-lg shadow-rose-600/20"
+                className="w-full mt-4 py-3 rounded-xl bg-rose-700 hover:bg-rose-600 text-white font-black transition-all shadow-md shadow-rose-700/20"
               >
                 Submit Request to Agronomist
               </button>

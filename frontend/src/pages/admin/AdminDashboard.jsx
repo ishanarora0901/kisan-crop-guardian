@@ -144,22 +144,22 @@ const AdminDashboard = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs uppercase font-bold text-purple-400 tracking-wider">
+            <span className="text-xs uppercase font-extrabold text-purple-900 tracking-wider">
               System Administration & Telemetry
             </span>
-            <span className="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold">
+            <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-900 border border-purple-300 text-[10px] font-bold">
               Restricted /admin
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Admin Operations Portal</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-forest-950 tracking-tight">Admin Operations Portal</h1>
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex flex-wrap gap-1.5 p-1 rounded-2xl bg-slate-900 border border-slate-800 text-xs font-bold">
+        <div className="flex flex-wrap gap-1.5 p-1 rounded-2xl bg-white border border-sage-300 text-xs font-bold shadow-sm">
           <button
             onClick={() => setActiveTab('analytics')}
             className={`px-3 py-1.5 rounded-xl transition-all ${
-              activeTab === 'analytics' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
+              activeTab === 'analytics' ? 'bg-forest-800 text-white shadow-sm' : 'text-slate-600 hover:text-forest-950 hover:bg-sage-50'
             }`}
           >
             Platform Telemetry
@@ -167,7 +167,7 @@ const AdminDashboard = () => {
           <button
             onClick={() => setActiveTab('users')}
             className={`px-3 py-1.5 rounded-xl transition-all ${
-              activeTab === 'users' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
+              activeTab === 'users' ? 'bg-forest-800 text-white shadow-sm' : 'text-slate-600 hover:text-forest-950 hover:bg-sage-50'
             }`}
           >
             User Ops ({usersList.length})
@@ -175,7 +175,7 @@ const AdminDashboard = () => {
           <button
             onClick={() => setActiveTab('broadcast')}
             className={`px-3 py-1.5 rounded-xl transition-all ${
-              activeTab === 'broadcast' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
+              activeTab === 'broadcast' ? 'bg-forest-800 text-white shadow-sm' : 'text-slate-600 hover:text-forest-950 hover:bg-sage-50'
             }`}
           >
             Broadcast Alerts
@@ -183,7 +183,7 @@ const AdminDashboard = () => {
           <button
             onClick={() => setActiveTab('blockchain')}
             className={`px-3 py-1.5 rounded-xl transition-all ${
-              activeTab === 'blockchain' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
+              activeTab === 'blockchain' ? 'bg-forest-800 text-white shadow-sm' : 'text-slate-600 hover:text-forest-950 hover:bg-sage-50'
             }`}
           >
             Blockchain Ledger
@@ -197,49 +197,49 @@ const AdminDashboard = () => {
           {/* Top 6 KPI Metric Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
             <div className="glass-panel p-4 rounded-2xl">
-              <span className="text-[10px] text-slate-500 font-bold uppercase">Total Farmers</span>
-              <p className="text-2xl font-black text-white mt-1">{analytics.totalFarmers}</p>
-              <span className="text-[10px] text-emerald-400 font-semibold">Active Producers</span>
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Total Farmers</span>
+              <p className="text-2xl font-black text-forest-950 mt-1">{analytics.totalFarmers}</p>
+              <span className="text-[10px] text-forest-800 font-bold">Active Producers</span>
             </div>
 
             <div className="glass-panel p-4 rounded-2xl">
-              <span className="text-[10px] text-slate-500 font-bold uppercase">Active Farms</span>
-              <p className="text-2xl font-black text-white mt-1">{analytics.activeFarms}</p>
-              <span className="text-[10px] text-slate-400">Total Fields</span>
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Active Farms</span>
+              <p className="text-2xl font-black text-forest-950 mt-1">{analytics.activeFarms}</p>
+              <span className="text-[10px] text-slate-600 font-semibold">Total Fields</span>
             </div>
 
             <div className="glass-panel p-4 rounded-2xl">
-              <span className="text-[10px] text-slate-500 font-bold uppercase">Active Crop Cycles</span>
-              <p className="text-2xl font-black text-white mt-1">{analytics.activeCrops}</p>
-              <span className="text-[10px] text-emerald-400 font-semibold">Under AI Monitoring</span>
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Active Crop Cycles</span>
+              <p className="text-2xl font-black text-forest-950 mt-1">{analytics.activeCrops}</p>
+              <span className="text-[10px] text-emerald-800 font-bold">Under AI Monitoring</span>
             </div>
 
             <div className="glass-panel p-4 rounded-2xl">
-              <span className="text-[10px] text-slate-500 font-bold uppercase">Proactive Alerts</span>
-              <p className="text-2xl font-black text-amber-400 mt-1">{analytics.totalAlerts}</p>
-              <span className="text-[10px] text-rose-400 font-semibold">{analytics.activeCriticalAlerts} Critical</span>
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Proactive Alerts</span>
+              <p className="text-2xl font-black text-amber-700 mt-1">{analytics.totalAlerts}</p>
+              <span className="text-[10px] text-rose-700 font-bold">{analytics.activeCriticalAlerts} Critical</span>
             </div>
 
             <div className="glass-panel p-4 rounded-2xl">
-              <span className="text-[10px] text-slate-500 font-bold uppercase">Specialists</span>
-              <p className="text-2xl font-black text-cyan-400 mt-1">{analytics.totalSpecialists}</p>
-              <span className="text-[10px] text-cyan-400 font-semibold">ICAR Verified</span>
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Specialists</span>
+              <p className="text-2xl font-black text-teal-800 mt-1">{analytics.totalSpecialists}</p>
+              <span className="text-[10px] text-teal-800 font-bold">ICAR Verified</span>
             </div>
 
             <div className="glass-panel p-4 rounded-2xl">
-              <span className="text-[10px] text-slate-500 font-bold uppercase">Crop Passports</span>
-              <p className="text-2xl font-black text-emerald-400 mt-1">{analytics.totalBlockchainPassports}</p>
-              <span className="text-[10px] text-slate-400 font-semibold">SHA-256 Stamped</span>
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Crop Passports</span>
+              <p className="text-2xl font-black text-forest-950 mt-1">{analytics.totalBlockchainPassports}</p>
+              <span className="text-[10px] text-forest-800 font-bold">SHA-256 Stamped</span>
             </div>
           </div>
 
           {/* Regional Risk Pattern & Distribution */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-8 glass-panel p-6 rounded-3xl">
-              <h3 className="font-extrabold text-base text-white mb-4">Regional Crop-Risk Matrix & Telemetry</h3>
+              <h3 className="font-extrabold text-base text-forest-950 mb-4">Regional Crop-Risk Matrix & Telemetry</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="border-b border-slate-800 text-slate-400 font-bold">
+                  <thead className="border-b border-sage-200 text-slate-700 font-bold">
                     <tr>
                       <th className="pb-3">Agricultural Region</th>
                       <th className="pb-3">Active Farms</th>
@@ -247,13 +247,13 @@ const AdminDashboard = () => {
                       <th className="pb-3">Calculated Risk Index</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60 text-slate-200 font-medium">
+                  <tbody className="divide-y divide-sage-200 text-slate-800 font-medium">
                     {analytics.regionalDistribution?.map((r, idx) => (
-                      <tr key={idx} className="hover:bg-slate-900/60 transition-colors">
-                        <td className="py-3 font-bold text-white">{r.region}</td>
-                        <td className="py-3">{r.activeFarms}</td>
-                        <td className="py-3 text-emerald-400">{r.primaryCrop}</td>
-                        <td className="py-3 font-bold text-amber-400">{r.avgRisk}</td>
+                      <tr key={idx} className="hover:bg-sage-50/80 transition-colors">
+                        <td className="py-3 font-bold text-forest-950">{r.region}</td>
+                        <td className="py-3 font-semibold">{r.activeFarms}</td>
+                        <td className="py-3 font-bold text-forest-800">{r.primaryCrop}</td>
+                        <td className="py-3 font-extrabold text-amber-800">{r.avgRisk}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -262,7 +262,7 @@ const AdminDashboard = () => {
             </div>
 
             <div className="lg:col-span-4 glass-panel p-6 rounded-3xl flex flex-col items-center justify-center">
-              <h3 className="font-extrabold text-sm text-white mb-2">Platform Risk Index Distribution</h3>
+              <h3 className="font-extrabold text-sm text-forest-950 mb-2">Platform Risk Index Distribution</h3>
               <div className="h-44 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -279,15 +279,15 @@ const AdminDashboard = () => {
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '10px', fontSize: '11px' }} />
+                    <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#cbd5e1', borderRadius: '10px', fontSize: '11px', color: '#0f172a', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
-              <div className="grid grid-cols-2 gap-2 text-[10px] w-full text-center mt-2">
-                <span className="text-emerald-400">● 35% Low</span>
-                <span className="text-amber-400">● 42% Medium</span>
-                <span className="text-orange-400">● 18% High</span>
-                <span className="text-red-400">● 5% Critical</span>
+              <div className="grid grid-cols-2 gap-2 text-[10px] w-full text-center mt-2 font-bold">
+                <span className="text-emerald-800">● 35% Low</span>
+                <span className="text-amber-800">● 42% Medium</span>
+                <span className="text-orange-800">● 18% High</span>
+                <span className="text-rose-800">● 5% Critical</span>
               </div>
             </div>
           </div>
@@ -297,10 +297,10 @@ const AdminDashboard = () => {
       {/* TAB 2: USER MANAGEMENT */}
       {activeTab === 'users' && (
         <div className="glass-panel p-6 rounded-3xl space-y-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-sage-200">
             <div>
-              <h3 className="font-extrabold text-base text-white">Registered Farmers & Specialists</h3>
-              <p className="text-xs text-slate-400">Manage account permissions, premium subscriptions, and verification</p>
+              <h3 className="font-extrabold text-base text-forest-950">Registered Farmers & Specialists</h3>
+              <p className="text-xs text-slate-600 font-medium">Manage account permissions, premium subscriptions, and verification</p>
             </div>
 
             <div className="flex items-center gap-2.5 w-full sm:w-auto">
@@ -311,14 +311,14 @@ const AdminDashboard = () => {
                   placeholder="Search by name or email..."
                   value={userSearch}
                   onChange={(e) => setUserSearch(e.target.value)}
-                  className="pl-8 pr-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white"
+                  className="pl-8 pr-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-medium focus:border-forest-800 focus:outline-none shadow-sm"
                 />
               </div>
 
               <select
                 value={roleFilter}
                 onChange={(e) => setRoleFilter(e.target.value)}
-                className="px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white"
+                className="px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold focus:border-forest-800 focus:outline-none shadow-sm"
               >
                 <option value="all">All Roles</option>
                 <option value="farmer">Farmers</option>
@@ -330,7 +330,7 @@ const AdminDashboard = () => {
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-slate-800 text-slate-400 font-bold">
+              <thead className="border-b border-sage-200 text-slate-700 font-bold">
                 <tr>
                   <th className="pb-3">Name & Email</th>
                   <th className="pb-3">Role</th>
@@ -339,23 +339,23 @@ const AdminDashboard = () => {
                   <th className="pb-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-slate-200">
+              <tbody className="divide-y divide-sage-200 text-slate-800">
                 {usersList.map((u) => (
-                  <tr key={u._id} className="hover:bg-slate-900/60 transition-colors">
+                  <tr key={u._id} className="hover:bg-sage-50/80 transition-colors">
                     <td className="py-3">
-                      <p className="font-bold text-white">{u.name}</p>
-                      <p className="text-[11px] text-slate-400">{u.email}</p>
+                      <p className="font-bold text-forest-950">{u.name}</p>
+                      <p className="text-[11px] text-slate-500 font-medium">{u.email}</p>
                     </td>
                     <td className="py-3">
-                      <span className="capitalize px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold text-[11px]">
+                      <span className="capitalize px-2 py-0.5 rounded-full bg-sage-100 text-forest-800 border border-sage-200 font-bold text-[11px]">
                         {u.role}
                       </span>
                     </td>
                     <td className="py-3">
                       <button
                         onClick={() => handleTogglePremium(u._id, u.isPremium)}
-                        className={`px-2 py-0.5 rounded font-bold text-[10px] ${
-                          u.isPremium ? 'bg-amber-500/20 text-amber-300' : 'bg-slate-800 text-slate-400'
+                        className={`px-2 py-0.5 rounded font-black text-[10px] border ${
+                          u.isPremium ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-600 border-slate-200'
                         }`}
                       >
                         {u.isPremium ? '★ PRO MEMBER' : 'FREE TIER'}
@@ -363,8 +363,8 @@ const AdminDashboard = () => {
                     </td>
                     <td className="py-3">
                       <span
-                        className={`px-2 py-0.5 rounded font-bold text-[10px] ${
-                          u.isActive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'
+                        className={`px-2 py-0.5 rounded font-bold text-[10px] border ${
+                          u.isActive ? 'bg-emerald-100 text-emerald-900 border-emerald-300' : 'bg-rose-100 text-rose-900 border-rose-300'
                         }`}
                       >
                         {u.isActive ? 'Active' : 'Deactivated'}
@@ -373,7 +373,7 @@ const AdminDashboard = () => {
                     <td className="py-3 text-right space-x-2">
                       <button
                         onClick={() => handleToggleUserActive(u._id, u.isActive)}
-                        className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 font-semibold"
+                        className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-[11px] text-slate-800 font-bold border border-slate-300 shadow-sm"
                       >
                         {u.isActive ? 'Deactivate' : 'Activate'}
                       </button>
@@ -389,40 +389,40 @@ const AdminDashboard = () => {
       {/* TAB 3: BROADCAST ALERTS */}
       {activeTab === 'broadcast' && (
         <div className="glass-panel p-6 rounded-3xl max-w-2xl mx-auto space-y-4">
-          <div className="flex items-center gap-2 text-purple-400 font-extrabold text-base mb-2">
-            <Radio className="w-5 h-5" />
+          <div className="flex items-center gap-2 text-forest-950 font-extrabold text-base mb-2">
+            <Radio className="w-5 h-5 text-forest-800" />
             <span>Platform Emergency Broadcast Dispatcher</span>
           </div>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-600 font-medium">
             Dispatch urgent agricultural warnings directly to all farmer dashboards and mobile endpoints simultaneously.
           </p>
 
           {broadcastStatus && (
-            <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 font-bold text-xs flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-700" />
               <span>{broadcastStatus}</span>
             </div>
           )}
 
           <form onSubmit={handleBroadcast} className="space-y-3.5 text-xs">
             <div>
-              <label className="block font-bold text-slate-300 mb-1">Broadcast Alert Title</label>
+              <label className="block font-bold text-slate-700 mb-1">Broadcast Alert Title</label>
               <input
                 type="text"
                 required
                 value={broadcastTitle}
                 onChange={(e) => setBroadcastTitle(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
+                className="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:border-forest-800 focus:outline-none shadow-sm"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block font-bold text-slate-300 mb-1">Severity Level</label>
+                <label className="block font-bold text-slate-700 mb-1">Severity Level</label>
                 <select
                   value={broadcastSeverity}
                   onChange={(e) => setBroadcastSeverity(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:border-forest-800 focus:outline-none shadow-sm"
                 >
                   <option value="CRITICAL">CRITICAL</option>
                   <option value="HIGH">HIGH</option>
@@ -431,32 +431,32 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-300 mb-1">Target Geographic Zone</label>
+                <label className="block font-bold text-slate-700 mb-1">Target Geographic Zone</label>
                 <input
                   type="text"
                   value={broadcastRegion}
                   onChange={(e) => setBroadcastRegion(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 font-medium focus:border-forest-800 focus:outline-none shadow-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block font-bold text-slate-300 mb-1">Alert Directives & Instructions</label>
+              <label className="block font-bold text-slate-700 mb-1">Alert Directives & Instructions</label>
               <textarea
                 rows="4"
                 required
                 value={broadcastMessage}
                 onChange={(e) => setBroadcastMessage(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-900 font-medium focus:border-forest-800 focus:outline-none shadow-sm"
               ></textarea>
             </div>
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold flex items-center justify-center gap-2 shadow-lg shadow-purple-600/25 transition-all hover:scale-[1.02]"
+              className="w-full py-3.5 rounded-xl bg-forest-800 hover:bg-forest-700 text-white font-extrabold flex items-center justify-center gap-2 shadow-lg shadow-forest-800/25 transition-all hover:scale-[1.02]"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-4 h-4 text-emerald-300" />
               <span>Broadcast Emergency Warning to All Farmers</span>
             </button>
           </form>
@@ -466,22 +466,22 @@ const AdminDashboard = () => {
       {/* TAB 4: BLOCKCHAIN LEDGER */}
       {activeTab === 'blockchain' && blockchainData && (
         <div className="glass-panel p-6 rounded-3xl space-y-4">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div className="flex items-center justify-between pb-4 border-b border-sage-200">
             <div>
-              <h3 className="font-extrabold text-base text-white">Global Blockchain Audit Ledger</h3>
-              <p className="text-xs text-slate-400">
+              <h3 className="font-extrabold text-base text-forest-950">Global Blockchain Audit Ledger</h3>
+              <p className="text-xs text-slate-600 font-medium">
                 {blockchainData.totalPassports} Active Passports · {blockchainData.totalMinedBlocks} Total Cryptographic Blocks
               </p>
             </div>
-            <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold flex items-center gap-1.5">
-              <Lock className="w-3 h-3" />
+            <span className="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold flex items-center gap-1.5">
+              <Lock className="w-3 h-3 text-emerald-700" />
               <span>SHA-256 Ledger Verified</span>
             </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-slate-800 text-slate-400 font-bold">
+              <thead className="border-b border-sage-200 text-slate-700 font-bold">
                 <tr>
                   <th className="pb-3">Block #</th>
                   <th className="pb-3">Passport & Crop</th>
@@ -490,17 +490,17 @@ const AdminDashboard = () => {
                   <th className="pb-3">SHA-256 Hash</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-slate-200 font-mono text-[11px]">
+              <tbody className="divide-y divide-sage-200 text-slate-800 font-mono text-[11px]">
                 {blockchainData.recentBlocks?.map((b, idx) => (
-                  <tr key={idx} className="hover:bg-slate-900/60 transition-colors">
-                    <td className="py-3 font-bold text-emerald-400">#{b.index}</td>
+                  <tr key={idx} className="hover:bg-sage-50/80 transition-colors">
+                    <td className="py-3 font-bold text-forest-800">#{b.index}</td>
                     <td className="py-3 font-sans">
-                      <p className="font-bold text-white">{b.cropName}</p>
+                      <p className="font-bold text-forest-950">{b.cropName}</p>
                       <p className="text-[10px] text-slate-500 font-mono">{b.passportId}</p>
                     </td>
-                    <td className="py-3 font-sans text-slate-200">{b.eventTitle}</td>
-                    <td className="py-3 font-sans text-slate-400">{b.verifiedBy}</td>
-                    <td className="py-3 text-emerald-400 truncate max-w-[200px]">{b.blockHash}</td>
+                    <td className="py-3 font-sans text-slate-800 font-medium">{b.eventTitle}</td>
+                    <td className="py-3 font-sans text-slate-600 font-medium">{b.verifiedBy}</td>
+                    <td className="py-3 text-emerald-800 font-bold truncate max-w-[200px]">{b.blockHash}</td>
                   </tr>
                 ))}
               </tbody>

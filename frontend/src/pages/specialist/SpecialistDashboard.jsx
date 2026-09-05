@@ -110,10 +110,10 @@ const SpecialistDashboard = () => {
             Doctor Verified
           </span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
+        <h1 className="text-2xl sm:text-3xl font-black text-forest-950 tracking-tight">
           Specialist Consultation & Prescription Center
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-slate-600 mt-1 font-medium">
           Review incoming farmer cases, inspect AI computer vision leaf scans, and issue verified ICAR prescriptions.
         </p>
       </div>
@@ -122,7 +122,7 @@ const SpecialistDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* INCOMING QUEUE */}
         <div className="lg:col-span-4 space-y-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 px-1">
+          <h3 className="text-xs font-black uppercase tracking-wider text-slate-600 px-1">
             Farmer Consultation Queue ({consultations.length})
           </h3>
 
@@ -141,24 +141,24 @@ const SpecialistDashboard = () => {
               }}
               className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                 selectedConsultation?._id === item._id
-                  ? 'bg-slate-800/90 border-cyan-500/50 shadow-md shadow-cyan-500/10'
-                  : 'glass-panel hover:bg-slate-900/90'
+                  ? 'bg-teal-50/80 border-2 border-teal-300 shadow-md shadow-teal-500/10'
+                  : 'bg-white hover:bg-sage-50 border border-sage-200 shadow-sm'
               }`}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="font-bold text-sm text-white truncate max-w-[200px]">{item.subject}</span>
+                <span className="font-black text-sm text-forest-950 truncate max-w-[200px]">{item.subject}</span>
                 <span
-                  className={`text-[9px] font-black px-2 py-0.5 rounded ${
-                    item.status === 'PRESCRIBED' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'
+                  className={`text-[9px] font-black px-2 py-0.5 rounded-full border ${
+                    item.status === 'PRESCRIBED' ? 'bg-emerald-100 text-emerald-900 border-emerald-300' : 'bg-amber-100 text-amber-900 border-amber-300'
                   }`}
                 >
                   {item.status}
                 </span>
               </div>
-              <p className="text-xs text-slate-300">
-                Farmer: <strong className="text-white">{item.farmer?.name || 'Harpreet Singh'}</strong> ({item.cropCycle?.cropName})
+              <p className="text-xs text-slate-600 font-medium">
+                Farmer: <strong className="text-forest-950 font-bold">{item.farmer?.name || 'Harpreet Singh'}</strong> ({item.cropCycle?.cropName})
               </p>
-              <p className="text-[10px] text-slate-500 mt-1">{new Date(item.createdAt).toLocaleString()}</p>
+              <p className="text-[10px] text-slate-500 font-medium mt-1">{new Date(item.createdAt).toLocaleString()}</p>
             </div>
           ))}
         </div>
@@ -166,36 +166,36 @@ const SpecialistDashboard = () => {
         {/* CASE INSPECTION & PRESCRIPTION ISSUANCE */}
         <div className="lg:col-span-8 space-y-6">
           {selectedConsultation ? (
-            <div className="glass-panel p-6 rounded-3xl space-y-6">
+            <div className="glass-panel p-6 rounded-3xl space-y-6 border border-sage-200 shadow-sm">
               {/* Header */}
-              <div className="pb-4 border-b border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+              <div className="pb-4 border-b border-sage-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                 <div>
-                  <h3 className="text-lg font-black text-white">{selectedConsultation.subject}</h3>
-                  <p className="text-xs text-slate-400">
-                    Farmer: <strong className="text-emerald-400">{selectedConsultation.farmer?.name}</strong> · Crop:{' '}
+                  <h3 className="text-lg font-black text-forest-950">{selectedConsultation.subject}</h3>
+                  <p className="text-xs text-slate-600 font-medium">
+                    Farmer: <strong className="text-forest-900 font-bold">{selectedConsultation.farmer?.name}</strong> · Crop:{' '}
                     {selectedConsultation.cropCycle?.cropName} ({selectedConsultation.cropCycle?.cropVariety})
                   </p>
                 </div>
-                <span className="px-2.5 py-1 rounded-lg bg-cyan-500/10 text-cyan-400 text-xs font-bold">
+                <span className="px-2.5 py-1 rounded-full bg-teal-100 text-teal-900 text-xs font-bold border border-teal-200">
                   {selectedConsultation.priority} PRIORITY
                 </span>
               </div>
 
               {/* Farmer's Complaint & Uploaded Scan */}
-              <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-xs space-y-2">
-                <span className="font-bold text-slate-300 block">Farmer Query / Observed Symptoms:</span>
-                <p className="text-slate-200 leading-relaxed">{selectedConsultation.farmerDescription}</p>
+              <div className="p-4 rounded-2xl bg-sage-50 border border-sage-200 text-xs space-y-2 text-slate-800">
+                <span className="font-bold text-forest-950 block">Farmer Query / Observed Symptoms:</span>
+                <p className="text-slate-700 leading-relaxed font-medium">{selectedConsultation.farmerDescription}</p>
 
                 {selectedConsultation.diseaseDetection && (
-                  <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between">
+                  <div className="mt-3 pt-3 border-t border-sage-200 flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] text-slate-400 uppercase font-bold">AI Vision Pre-Scan:</span>
-                      <p className="font-bold text-cyan-400 mt-0.5">
+                      <span className="text-[10px] text-slate-500 uppercase font-bold">AI Vision Pre-Scan:</span>
+                      <p className="font-bold text-forest-800 mt-0.5">
                         {selectedConsultation.diseaseDetection.detectedDisease} (
                         {selectedConsultation.diseaseDetection.confidenceScore}% confidence)
                       </p>
                     </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold">
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-white border border-sage-300 text-slate-700 font-bold shadow-sm">
                       Pre-analyzed by AI
                     </span>
                   </div>
@@ -203,71 +203,71 @@ const SpecialistDashboard = () => {
               </div>
 
               {/* OFFICIAL PRESCRIPTION BUILDER */}
-              <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-cyan-500/30 space-y-4">
-                <div className="flex items-center gap-2 text-cyan-400 font-extrabold text-sm">
-                  <Stethoscope className="w-5 h-5" />
+              <div className="p-6 rounded-2xl bg-white border-2 border-teal-300 shadow-sm space-y-4">
+                <div className="flex items-center gap-2 text-teal-900 font-black text-sm">
+                  <Stethoscope className="w-5 h-5 text-teal-800" />
                   <span>Issue Official Diagnosis & Prescription</span>
                 </div>
 
                 <form onSubmit={handlePrescribeSubmit} className="space-y-3.5 text-xs">
                   <div>
-                    <label className="block font-bold text-slate-300 mb-1">Confirmed Pathological Diagnosis</label>
+                    <label className="block font-bold text-slate-700 mb-1">Confirmed Pathological Diagnosis</label>
                     <input
                       type="text"
                       required
                       value={prescriptionForm.specialistDiagnosis}
                       onChange={(e) => setPrescriptionForm({ ...prescriptionForm, specialistDiagnosis: e.target.value })}
                       placeholder="e.g. Confirmed Early-Stage Wheat Leaf Rust (Puccinia triticina)"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white focus:border-cyan-500 font-bold"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 focus:border-teal-700 font-bold shadow-sm"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-bold text-slate-300 mb-1">Clinical Advisory & Field Directives</label>
+                    <label className="block font-bold text-slate-700 mb-1">Clinical Advisory & Field Directives</label>
                     <textarea
                       rows="3"
                       required
                       value={prescriptionForm.professionalAdvice}
                       onChange={(e) => setPrescriptionForm({ ...prescriptionForm, professionalAdvice: e.target.value })}
                       placeholder="e.g. Pathogen is in initial sporulation stage. Apply targeted systemic fungicide immediately before morning dew settles."
-                      className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white focus:border-cyan-500"
+                      className="w-full px-3.5 py-2 rounded-xl bg-white border border-slate-300 text-slate-900 focus:border-teal-700 font-medium shadow-sm"
                     ></textarea>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block font-bold text-slate-300 mb-1">Recommended Chemical Treatment</label>
+                      <label className="block font-bold text-slate-700 mb-1">Recommended Chemical Treatment</label>
                       <input
                         type="text"
                         value={prescriptionForm.chemicalName}
                         onChange={(e) => setPrescriptionForm({ ...prescriptionForm, chemicalName: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white"
+                        className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-900 focus:border-teal-700 font-medium shadow-sm"
                       />
                     </div>
                     <div>
-                      <label className="block font-bold text-slate-300 mb-1">Dosage Per Acre</label>
+                      <label className="block font-bold text-slate-700 mb-1">Dosage Per Acre</label>
                       <input
                         type="text"
                         value={prescriptionForm.dosagePerAcre}
                         onChange={(e) => setPrescriptionForm({ ...prescriptionForm, dosagePerAcre: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white"
+                        className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-900 focus:border-teal-700 font-medium shadow-sm"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block font-bold text-slate-300 mb-1">Organic / Bio-Remedy Alternative</label>
+                    <label className="block font-bold text-slate-700 mb-1">Organic / Bio-Remedy Alternative</label>
                     <input
                       type="text"
                       value={prescriptionForm.organicAlternative}
                       onChange={(e) => setPrescriptionForm({ ...prescriptionForm, organicAlternative: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white"
+                      className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-900 focus:border-teal-700 font-medium shadow-sm"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-extrabold flex items-center justify-center gap-2 shadow-lg shadow-cyan-600/20 transition-all hover:scale-[1.02]"
+                    className="w-full py-3 rounded-xl bg-forest-800 hover:bg-forest-700 text-white font-black flex items-center justify-center gap-2 shadow-md shadow-forest-800/20 transition-all hover:scale-[1.01]"
                   >
                     <FileCheck2 className="w-4 h-4" />
                     <span>Authorize Prescription & Stamp to Blockchain Passport</span>
@@ -276,9 +276,9 @@ const SpecialistDashboard = () => {
               </div>
             </div>
           ) : (
-            <div className="glass-panel p-12 rounded-3xl text-center text-slate-400">
-              <Stethoscope className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-              <p className="text-sm font-semibold">Select a case from the queue to start agronomic review</p>
+            <div className="glass-panel p-12 rounded-3xl text-center text-slate-500 border border-sage-200">
+              <Stethoscope className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+              <p className="text-sm font-bold text-slate-700">Select a case from the queue to start agronomic review</p>
             </div>
           )}
         </div>

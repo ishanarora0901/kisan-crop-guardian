@@ -28,6 +28,8 @@ import {
   Layers,
   ArrowUpRight,
   AlertTriangle,
+  History,
+  Plus,
 } from 'lucide-react';
 
 const FarmerDashboard = () => {
@@ -116,37 +118,37 @@ const FarmerDashboard = () => {
   return (
     <div className="space-y-6 pb-12">
       {/* Top Banner with Farm & Crop Selector */}
-      <div className="glass-panel p-6 rounded-3xl relative overflow-hidden">
+      <div className="glass-panel p-6 rounded-3xl relative overflow-hidden border border-sage-200 shadow-sm">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs uppercase font-bold text-emerald-400 tracking-wider">
+              <span className="text-xs uppercase font-black text-forest-800 tracking-wider">
                 Farmer Intelligence Command
               </span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-forest-700 animate-pulse"></span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
+            <h1 className="text-2xl sm:text-3xl font-black text-forest-950 tracking-tight">
               Welcome back, {user?.name || 'Harpreet Singh'}
             </h1>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-600 mt-1 font-medium">
               Proactive AI Decision Support · Farm:{' '}
-              <strong className="text-slate-200">{selectedCycle?.farm?.name || 'Green Acres Sector 4'}</strong> (
+              <strong className="text-forest-900 font-bold">{selectedCycle?.farm?.name || 'Green Acres Sector 4'}</strong> (
               {selectedCycle?.farm?.locationName || 'Ludhiana, Punjab'})
             </p>
           </div>
 
-          {/* Active Crop Cycle Selector */}
-          <div className="flex items-center gap-3 self-stretch sm:self-auto">
+          {/* Active Crop Cycle Selector & Action */}
+          <div className="flex flex-wrap items-center gap-2.5 self-stretch sm:self-auto">
             {cropCycles.length > 0 && (
-              <div className="flex items-center gap-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-2xl w-full sm:w-auto">
-                <Sprout className="w-4 h-4 text-emerald-400 ml-2 shrink-0" />
+              <div className="flex items-center gap-2 bg-white border border-sage-300 p-1.5 rounded-2xl w-full sm:w-auto shadow-sm">
+                <Sprout className="w-4 h-4 text-forest-800 ml-2 shrink-0" />
                 <select
                   value={selectedCycle?._id || ''}
                   onChange={(e) => handleCycleChange(e.target.value)}
-                  className="bg-transparent text-xs font-bold text-white pr-4 py-1.5 focus:outline-none cursor-pointer"
+                  className="bg-white text-xs font-bold text-forest-950 pr-4 py-1.5 focus:outline-none cursor-pointer"
                 >
                   {cropCycles.map((cycle) => (
-                    <option key={cycle._id} value={cycle._id} className="bg-slate-900 text-white">
+                    <option key={cycle._id} value={cycle._id} className="bg-white text-slate-900">
                       {cycle.cropName} ({cycle.cropVariety}) - {cycle.season}
                     </option>
                   ))}
@@ -154,41 +156,49 @@ const FarmerDashboard = () => {
               </div>
             )}
 
+            <Link
+              to="/farms-and-crops"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-forest-800 hover:bg-forest-700 text-white text-xs font-extrabold shadow-sm transition-all hover:scale-105"
+            >
+              <Plus className="w-3.5 h-3.5 text-emerald-300" />
+              <span>Register Cycle</span>
+            </Link>
+
             <button
               onClick={fetchDashboardData}
-              className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors shrink-0"
+              className="p-2.5 rounded-xl bg-sage-100 hover:bg-sage-200 text-forest-800 border border-sage-300 transition-colors shrink-0"
               title="Refresh Telemetry & AI Prediction"
             >
-              <RefreshCw className="w-4 h-4 text-emerald-400" />
+              <RefreshCw className="w-4 h-4 text-forest-800" />
             </button>
           </div>
         </div>
 
         {/* Selected Crop Meta Strip */}
         {selectedCycle && (
-          <div className="mt-5 pt-4 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-            <div className="p-2.5 rounded-xl bg-slate-950/50 border border-slate-800/80">
-              <span className="text-[10px] text-slate-500 font-bold uppercase">Crop Age & Stage</span>
-              <p className="font-extrabold text-white mt-0.5">
+          <div className="mt-5 pt-4 border-t border-sage-200 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div className="p-3 rounded-xl bg-sage-50 border border-sage-200">
+              <span className="text-[10px] text-slate-600 font-bold uppercase">Crop Age & Stage</span>
+              <p className="font-black text-forest-950 mt-0.5">
                 {selectedCycle.cropAgeDays || 82} Days · {selectedCycle.currentGrowthStage || 'Ear Emergence'}
               </p>
             </div>
 
-            <div className="p-2.5 rounded-xl bg-slate-950/50 border border-slate-800/80">
-              <span className="text-[10px] text-slate-500 font-bold uppercase">Field Allocation</span>
-              <p className="font-extrabold text-white mt-0.5">{selectedCycle.fieldAreaAcres || 5} Acres</p>
+            <div className="p-3 rounded-xl bg-sage-50 border border-sage-200">
+              <span className="text-[10px] text-slate-600 font-bold uppercase">Field Allocation</span>
+              <p className="font-black text-forest-950 mt-0.5">{selectedCycle.fieldAreaAcres || 5} Acres</p>
             </div>
 
-            <div className="p-2.5 rounded-xl bg-slate-950/50 border border-slate-800/80">
-              <span className="text-[10px] text-slate-500 font-bold uppercase">Expected Harvest</span>
-              <p className="font-extrabold text-white mt-0.5">
+            <div className="p-3 rounded-xl bg-sage-50 border border-sage-200">
+              <span className="text-[10px] text-slate-600 font-bold uppercase">Expected Harvest</span>
+              <p className="font-black text-forest-950 mt-0.5">
                 {new Date(selectedCycle.expectedHarvestDate).toLocaleDateString()}
               </p>
             </div>
 
-            <div className="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30">
-              <span className="text-[10px] text-emerald-400 font-bold uppercase">Passport ID</span>
-              <p className="font-mono text-[11px] font-extrabold text-emerald-300 mt-0.5 truncate">
+            <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-300">
+              <span className="text-[10px] text-forest-800 font-bold uppercase">Passport ID</span>
+              <p className="font-mono text-[11px] font-black text-forest-950 mt-0.5 truncate">
                 {selectedCycle.blockchainPassportId || 'CROP-PASS-WHEAT-2026'}
               </p>
             </div>
@@ -201,11 +211,11 @@ const FarmerDashboard = () => {
         <div>
           <div className="flex items-center justify-between mb-3 px-1">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
-              <h2 className="font-extrabold text-base text-white">{t('activeAlerts')}</h2>
+              <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></span>
+              <h2 className="font-black text-lg text-forest-950">{t('activeAlerts')}</h2>
             </div>
-            <span className="text-xs text-slate-400 font-medium">
-              {activeAlerts.length} urgent notices requiring preventive action
+            <span className="text-xs text-slate-700 font-bold">
+              {activeAlerts.length} {t('urgentNotices')}
             </span>
           </div>
 
@@ -224,15 +234,6 @@ const FarmerDashboard = () => {
             score={riskData?.cropHealthScore || 81}
             overallRisk={riskData?.overallRisk || 'MEDIUM'}
           />
-
-          {/* Quick AI Proactive USP Statement */}
-          <div className="mt-4 p-4 rounded-2xl bg-slate-900/70 border border-slate-800 text-xs">
-            <div className="flex items-center gap-2 text-emerald-400 font-bold mb-1">
-              <Sparkles className="w-4 h-4" />
-              <span>Proactive Philosophy</span>
-            </div>
-            <p className="text-slate-300 leading-relaxed">{t('proactiveMessage')}</p>
-          </div>
         </div>
 
         <div className="lg:col-span-2">
@@ -259,104 +260,132 @@ const FarmerDashboard = () => {
 
       {/* FINANCIAL & MULTI-SEASON COMPARISON PREVIEW */}
       {historicalData && (
-        <div className="glass-panel p-6 rounded-3xl">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800">
+        <div className="glass-panel p-6 rounded-3xl border border-sage-200 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-sage-200">
             <div>
-              <span className="text-xs uppercase font-bold text-emerald-400 tracking-wider">
+              <span className="text-xs uppercase font-black text-forest-800 tracking-wider">
                 Financial Optimization Intelligence
               </span>
-              <h3 className="text-xl font-extrabold text-white mt-0.5">
+              <h3 className="text-xl font-black text-forest-950 mt-0.5">
                 Previous Season vs Current Season AI Estimate
               </h3>
             </div>
             <Link
               to="/profitability"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-forest-800 hover:bg-forest-700 text-white text-xs font-bold transition-all shadow-sm"
             >
               <span>Detailed Breakdown</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-white" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Last Season Actual */}
-            <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">LAST SEASON (ACTUAL)</span>
-              <div className="grid grid-cols-2 gap-4 mt-4 text-xs">
-                <div>
-                  <span className="text-slate-500 font-medium">Recorded Yield:</span>
-                  <p className="text-lg font-bold text-white mt-0.5">
-                    {historicalData.lastSeason?.totalYieldQuintals || 48} Quintals
-                  </p>
+          {historicalData.lastSeason ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Last Season Actual */}
+              <div className="p-5 rounded-2xl bg-sage-50 border border-sage-200">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black text-slate-700 uppercase tracking-wider">
+                    {historicalData.lastSeason.seasonName || 'LAST SEASON (ACTUAL)'}
+                  </span>
+                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300">
+                    Self-Recorded Actual
+                  </span>
                 </div>
-                <div>
-                  <span className="text-slate-500 font-medium">Total Revenue:</span>
-                  <p className="text-lg font-bold text-white mt-0.5">
-                    ₹{(historicalData.lastSeason?.totalRevenue || 112000).toLocaleString()}
-                  </p>
+                <div className="grid grid-cols-2 gap-4 mt-4 text-xs">
+                  <div>
+                    <span className="text-slate-600 font-bold block">Recorded Yield:</span>
+                    <p className="text-lg font-black text-forest-950 mt-0.5">
+                      {historicalData.lastSeason.totalYieldQuintals} Quintals
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-slate-600 font-bold block">Total Revenue:</span>
+                    <p className="text-lg font-black text-forest-950 mt-0.5">
+                      ₹{Number(historicalData.lastSeason.totalRevenue || 0).toLocaleString()}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-slate-600 font-bold block">Total Cost:</span>
+                    <p className="text-lg font-black text-slate-800 mt-0.5">
+                      ₹{Number(historicalData.lastSeason.totalCost || 0).toLocaleString()}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-slate-600 font-bold block">Realized Net Profit:</span>
+                    <p className="text-lg font-black text-emerald-950 mt-0.5">
+                      ₹{Number(historicalData.lastSeason.netProfit || 0).toLocaleString()}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-slate-500 font-medium">Total Cost:</span>
-                  <p className="text-lg font-bold text-slate-300 mt-0.5">
-                    ₹{(historicalData.lastSeason?.totalCost || 72000).toLocaleString()}
+                {historicalData.lastSeason.primaryDiseaseOrIssue && (
+                  <p className="mt-3 text-[11px] text-rose-800 font-bold">
+                    Past Issues / Pathogens: {historicalData.lastSeason.primaryDiseaseOrIssue}
                   </p>
-                </div>
-                <div>
-                  <span className="text-slate-500 font-medium">Realized Net Profit:</span>
-                  <p className="text-lg font-extrabold text-amber-400 mt-0.5">
-                    ₹{(historicalData.lastSeason?.netProfit || 40000).toLocaleString()}
-                  </p>
-                </div>
+                )}
               </div>
-              <p className="mt-3 text-[11px] text-rose-400/90 font-medium">
-                Impact: {historicalData.lastSeason?.primaryDiseaseOrIssue || 'Fungal Yellow Rust (Yield drop 12%)'}
-              </p>
-            </div>
 
-            {/* Current Season AI Estimate */}
-            <div className="p-5 rounded-2xl bg-emerald-950/30 border border-emerald-500/40 shadow-lg shadow-emerald-500/5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
-                  CURRENT SEASON — AI ESTIMATE
-                </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  Statistical Model
-                </span>
-              </div>
-              <div className="grid grid-cols-2 gap-4 mt-4 text-xs">
-                <div>
-                  <span className="text-emerald-400/80 font-medium">Expected Yield:</span>
-                  <p className="text-lg font-bold text-white mt-0.5">
-                    {historicalData.currentEstimate?.totalYieldQuintals || 53} Quintals
-                  </p>
+              {/* Current Season AI Estimate */}
+              <div className="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-300 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black text-forest-900 uppercase tracking-wider">
+                    CURRENT SEASON — AI ESTIMATE
+                  </span>
+                  <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300">
+                    Statistical Model
+                  </span>
                 </div>
-                <div>
-                  <span className="text-emerald-400/80 font-medium">Estimated Revenue:</span>
-                  <p className="text-lg font-bold text-white mt-0.5">
-                    ₹{(historicalData.currentEstimate?.totalRevenue || 130000).toLocaleString()}
-                  </p>
+                <div className="grid grid-cols-2 gap-4 mt-4 text-xs">
+                  <div>
+                    <span className="text-slate-600 font-bold block">Expected Yield:</span>
+                    <p className="text-lg font-black text-forest-950 mt-0.5">
+                      {historicalData.currentEstimate?.totalYieldQuintals || 53} Quintals
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-slate-600 font-bold block">Expected Revenue:</span>
+                    <p className="text-lg font-black text-forest-950 mt-0.5">
+                      ₹{Number(historicalData.currentEstimate?.totalRevenue || 130000).toLocaleString()}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-slate-600 font-bold block">Estimated Costs:</span>
+                    <p className="text-lg font-black text-slate-800 mt-0.5">
+                      ₹{Number(historicalData.currentEstimate?.totalCost || 75000).toLocaleString()}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-slate-600 font-bold block">Expected Net Profit:</span>
+                    <p className="text-lg font-black text-forest-800 mt-0.5">
+                      ₹{Number(historicalData.currentEstimate?.netProfit || 55000).toLocaleString()}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-emerald-400/80 font-medium">Estimated Cost:</span>
-                  <p className="text-lg font-bold text-slate-300 mt-0.5">
-                    ₹{(historicalData.currentEstimate?.totalCost || 75000).toLocaleString()}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-emerald-400/80 font-medium">Expected Profit:</span>
-                  <p className="text-lg font-extrabold text-emerald-400 mt-0.5">
-                    ₹{(historicalData.currentEstimate?.netProfit || 55000).toLocaleString()}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-3 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between text-xs">
-                <span className="text-slate-300 font-semibold">{t('potentialImprovement')}:</span>
-                <span className="text-sm font-black text-emerald-400">
-                  +₹{(historicalData.deltas?.profitImprovement || 15000).toLocaleString()}
-                </span>
+                {historicalData.deltas && (
+                  <div className="mt-3 flex items-center justify-between pt-2.5 border-t border-emerald-200 text-xs">
+                    <span className="text-slate-600 font-semibold">Net Profit Variance:</span>
+                    <span className={`font-black ${historicalData.deltas.profitImprovement >= 0 ? 'text-forest-800' : 'text-rose-700'}`}>
+                      {historicalData.deltas.profitImprovement >= 0 ? '+' : ''}₹{historicalData.deltas.profitImprovement.toLocaleString()}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="p-6 rounded-2xl bg-amber-50/70 border border-amber-200 text-center">
+              <History className="w-8 h-8 text-amber-800 mx-auto mb-2" />
+              <h4 className="font-extrabold text-sm text-amber-950">No Previous Season Record Provided</h4>
+              <p className="text-xs text-slate-600 mt-1 max-w-md mx-auto">
+                You haven't self-recorded past season yields or expenses for this crop cycle yet. We do not generate mock or fake past data.
+              </p>
+              <Link
+                to="/farms-and-crops"
+                className="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-xl bg-forest-800 hover:bg-forest-700 text-white text-xs font-bold shadow-sm transition-all"
+              >
+                <Plus className="w-3.5 h-3.5 text-emerald-300" />
+                <span>Record Crop History & Yields</span>
+              </Link>
+            </div>
+          )}
         </div>
       )}
 
@@ -364,46 +393,46 @@ const FarmerDashboard = () => {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <Link
           to="/disease-scanner"
-          className="p-5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-cyan-500/40 transition-all flex flex-col items-center text-center group"
+          className="p-5 rounded-2xl bg-white hover:bg-sage-50 border border-sage-200 hover:border-forest-800/40 transition-all flex flex-col items-center text-center group shadow-sm"
         >
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
-            <ScanEye className="w-5 h-5" />
+          <div className="w-11 h-11 rounded-xl bg-teal-50 text-teal-800 border border-teal-200 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+            <ScanEye className="w-5 h-5 text-teal-800" />
           </div>
-          <h4 className="font-bold text-xs sm:text-sm text-white">Scan Leaf Photo</h4>
-          <p className="text-[11px] text-slate-400 mt-0.5">Instant AI Disease Vision</p>
+          <h4 className="font-black text-xs sm:text-sm text-forest-950">Scan Leaf Photo</h4>
+          <p className="text-[11px] text-slate-600 mt-0.5 font-medium">Instant AI Disease Vision</p>
         </Link>
 
         <Link
           to="/what-if-simulator"
-          className="p-5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-amber-500/40 transition-all flex flex-col items-center text-center group"
+          className="p-5 rounded-2xl bg-white hover:bg-sage-50 border border-sage-200 hover:border-forest-800/40 transition-all flex flex-col items-center text-center group shadow-sm"
         >
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
-            <Sliders className="w-5 h-5" />
+          <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-800 border border-amber-200 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+            <Sliders className="w-5 h-5 text-amber-800" />
           </div>
-          <h4 className="font-bold text-xs sm:text-sm text-white">What-If Simulator</h4>
-          <p className="text-[11px] text-slate-400 mt-0.5">Compare Alternate Crops</p>
+          <h4 className="font-black text-xs sm:text-sm text-forest-950">What-If Simulator</h4>
+          <p className="text-[11px] text-slate-600 mt-0.5 font-medium">Compare Alternate Crops</p>
         </Link>
 
         <Link
           to="/crop-passport"
-          className="p-5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-emerald-500/40 transition-all flex flex-col items-center text-center group"
+          className="p-5 rounded-2xl bg-white hover:bg-sage-50 border border-sage-200 hover:border-forest-800/40 transition-all flex flex-col items-center text-center group shadow-sm"
         >
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
-            <ShieldCheck className="w-5 h-5" />
+          <div className="w-11 h-11 rounded-xl bg-emerald-50 text-forest-800 border border-emerald-200 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+            <ShieldCheck className="w-5 h-5 text-forest-800" />
           </div>
-          <h4 className="font-bold text-xs sm:text-sm text-white">Blockchain Passport</h4>
-          <p className="text-[11px] text-slate-400 mt-0.5">Verifiable Farm Ledger</p>
+          <h4 className="font-black text-xs sm:text-sm text-forest-950">Blockchain Passport</h4>
+          <p className="text-[11px] text-slate-600 mt-0.5 font-medium">Verifiable Farm Ledger</p>
         </Link>
 
         <Link
           to="/consultations"
-          className="p-5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-rose-500/40 transition-all flex flex-col items-center text-center group"
+          className="p-5 rounded-2xl bg-white hover:bg-sage-50 border border-sage-200 hover:border-forest-800/40 transition-all flex flex-col items-center text-center group shadow-sm"
         >
-          <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
-            <Stethoscope className="w-5 h-5" />
+          <div className="w-11 h-11 rounded-xl bg-rose-50 text-rose-800 border border-rose-200 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+            <Stethoscope className="w-5 h-5 text-rose-800" />
           </div>
-          <h4 className="font-bold text-xs sm:text-sm text-white">Consult Specialist</h4>
-          <p className="text-[11px] text-slate-400 mt-0.5">Verified ICAR Agronomists</p>
+          <h4 className="font-black text-xs sm:text-sm text-forest-950">Consult Specialist</h4>
+          <p className="text-[11px] text-slate-600 mt-0.5 font-medium">Verified ICAR Agronomists</p>
         </Link>
       </div>
     </div>

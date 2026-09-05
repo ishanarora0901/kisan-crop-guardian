@@ -70,29 +70,50 @@ class HistoricalAnalyticsService {
    * Calculates side-by-side performance delta between Last Season Actuals and Current Season AI Projections
    */
   static async getSeasonComparison({ currentCropCycle, currentEstimate, lastSeasonRecord }) {
-    if (!lastSeasonRecord) {
-      lastSeasonRecord = {
-        seasonName: 'Last Season (Rabi 2023-24)',
-        totalYieldQuintals: 48,
-        totalRevenue: 112000,
-        totalCost: 72000,
-        netProfit: 40000,
-        profitPerAcre: 8000,
-        costPerQuintal: 1500,
-        primaryDiseaseOrIssue: 'Fungal Yellow Rust (Yield drop 12%)',
-      };
+    if (!lastSeasonRecord && currentCropCycle) {
+      if (currentCropCycle.previousCrop || (currentCropCycle.previousYieldQuintals > 0) || (currentCropCycle.previousProfit !== 0)) {
+        lastSeasonRecord = {
+          seasonName: `Previous Season (${currentCropCycle.previousCrop || 'Previous Crop'})`,
+          totalYieldQuintals: currentCropCycle.previousYieldQuintals || 0,
+          totalRevenue: currentCropCycle.previousRevenue || 0,
+          totalCost: currentCropCycle.previousCost || 0,
+          netProfit: currentCropCycle.previousProfit || 0,
+          profitPerAcre: currentCropCycle.previousProfit && currentCropCycle.fieldAreaAcres ? Math.round(currentCropCycle.previousProfit / currentCropCycle.fieldAreaAcres) : 0,
+          costPerQuintal: currentCropCycle.previousYieldQuintals > 0 ? Math.round(currentCropCycle.previousCost / currentCropCycle.previousYieldQuintals) : 0,
+          primaryDiseaseOrIssue: Array.isArray(currentCropCycle.previousDiseases) ? currentCropCycle.previousDiseases.join(', ') : (currentCropCycle.previousDiseases || ''),
+        };
+      }
     }
 
     if (!currentEstimate) {
+      const area = currentCropCycle?.fieldAreaAcres || 5;
+      const estYield = Math.round(area * 10.6);
+      const estCost = Math.round(area * 14400);
+      const estRev = Math.round(estYield * 2500);
       currentEstimate = {
-        seasonName: 'Current Season AI Projection',
-        totalYieldQuintals: 53,
-        totalRevenue: 130000,
-        totalCost: 75000,
-        netProfit: 55000,
-        profitPerAcre: 11000,
-        costPerQuintal: 1415,
+        seasonName: `${currentCropCycle?.season || 'Current Season'} (AI Projection)`,
+        totalYieldQuintals: estYield,
+        totalRevenue: estRev,
+        totalCost: estCost,
+        netProfit: estRev - estCost,
+        profitPerAcre: Math.round((estRev - estCost) / area),
+        costPerQuintal: Math.round(estCost / estYield),
         isCurrentEstimate: true,
+      };
+    }
+
+    if (!lastSeasonRecord) {
+      return {
+        lastSeason: null,
+        hasPastRecord: false,
+        currentEstimate,
+        deltas: null,
+        insights: [
+          'No previous season history entered yet for this crop cycle.',
+          'Add your past crop yield and expenditure records to unlock AI multi-season margin comparisons.',
+        ],
+        disclaimer:
+          'All current-season values are AI-driven statistical projections and estimates.',
       };
     }
 
@@ -102,18 +123,22 @@ class HistoricalAnalyticsService {
 
     return {
       lastSeason: lastSeasonRecord,
+      hasPastRecord: true,
       currentEstimate: currentEstimate,
       deltas: {
         profitImprovement,
-        profitImprovementPercentage: Math.round((profitImprovement / (lastSeasonRecord.netProfit || 1)) * 100),
+        profitImprovementPercentage: lastSeasonRecord.netProfit ? Math.round((profitImprovement / Math.abs(lastSeasonRecord.netProfit)) * 100) : 0,
         yieldImprovement,
         costVariance,
       },
       insights: [
-        'Your fertilizer expenditure was 18% higher last season due to unoptimized split doses.',
-        'Your crop experienced yield reduction during high-humidity fungal exposure in week 11.',
-        'Current weather intelligence indicates high disease pressure, but proactive mitigation can preserve the projected ₹55,000 profit margin.',
-        'Based on available historical and current data, your projected profitability is higher than last season.',
+        lastSeasonRecord.primaryDiseaseOrIssue
+          ? `Past crop vulnerability noted: ${lastSeasonRecord.primaryDiseaseOrIssue}.`
+          : 'Previous season completed with recorded actuals.',
+        profitImprovement >= 0
+          ? `Current AI season plan projects a +₹${profitImprovement.toLocaleString()} net profit improvement.`
+          : `Current season projected profit is ₹${Math.abs(profitImprovement).toLocaleString()} lower than last season.`,
+        'Adhere to recommended prophylactic protection to safeguard your projected harvest margin.',
       ],
       disclaimer:
         'All current-season values are AI-driven statistical projections and estimates, subject to weather conditions and adherence to recommended agricultural precautions.',

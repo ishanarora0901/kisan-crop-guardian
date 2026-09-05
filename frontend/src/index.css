@@ -4,42 +4,46 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100;
+    @apply bg-sage-50 text-slate-800 antialiased selection:bg-forest-800 selection:text-white;
   }
 }
 
-/* Custom modern scrollbars */
+/* Custom organic modern scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #f0f7f3;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
+  background: #c3ddcd;
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #10b981;
+  background: #0b4635;
 }
 
-/* Glassmorphic card styling */
+/* Pristine Card & Panel styling (matches reference) */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #ffffff;
+  border: 1px solid #e2ece5;
+  box-shadow: 0 4px 20px -2px rgba(11, 70, 53, 0.05), 0 2px 6px -1px rgba(11, 70, 53, 0.03);
 }
 
 .glass-panel-glow {
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.15);
+  background: #ffffff;
+  border: 1px solid rgba(11, 70, 53, 0.16);
+  box-shadow: 0 12px 35px -5px rgba(11, 70, 53, 0.09), 0 4px 10px -2px rgba(11, 70, 53, 0.03);
+}
+
+/* Botanical subtle gradient backdrop */
+.botanical-glow {
+  background: radial-gradient(circle at 10% 20%, rgba(11, 70, 53, 0.04) 0%, transparent 50%),
+              radial-gradient(circle at 90% 80%, rgba(65, 143, 112, 0.04) 0%, transparent 50%);
 }
 
 /* Pulse radar ring */

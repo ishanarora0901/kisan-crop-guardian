@@ -37,26 +37,26 @@ const Sidebar = () => {
   ];
 
   const specialistNav = [
-    { to: '/specialist/dashboard', label: 'Consultation Queue', icon: Stethoscope },
-    { to: '/farms-and-crops', label: 'Farmer Crop Inspect', icon: Tractor },
-    { to: '/disease-scanner', label: 'Disease Diagnostics Tool', icon: ScanEye },
-    { to: '/historical-intelligence', label: 'Agronomic History', icon: History },
+    { to: '/specialist/dashboard', label: t('consultationQueue'), icon: Stethoscope },
+    { to: '/farms-and-crops', label: t('farmerCropInspect'), icon: Tractor },
+    { to: '/disease-scanner', label: t('diseaseDiagnostics'), icon: ScanEye },
+    { to: '/historical-intelligence', label: t('agronomicHistory'), icon: History },
   ];
 
   const adminNav = [
-    { to: '/admin', label: 'Admin Command Center', icon: BarChart3 },
-    { to: '/admin/users', label: 'User & Specialist Ops', icon: Users },
-    { to: '/admin/blockchain', label: 'Blockchain Ledger Audit', icon: ShieldCheck },
-    { to: '/dashboard', label: 'Farmer View Preview', icon: LayoutDashboard },
+    { to: '/admin', label: t('adminCommandCenter'), icon: BarChart3 },
+    { to: '/admin/users', label: t('userSpecialistOps'), icon: Users },
+    { to: '/admin/blockchain', label: t('blockchainAudit'), icon: ShieldCheck },
+    { to: '/dashboard', label: t('dashboard'), icon: LayoutDashboard },
   ];
 
   const links = isAdmin ? adminNav : isSpecialist ? specialistNav : farmerNav;
 
   return (
-    <aside className="w-full md:w-64 bg-slate-900/60 border-r border-slate-800 shrink-0 p-4">
+    <aside className="w-full md:w-64 bg-white border-r border-[#e2ece5] shrink-0 p-4 shadow-[2px_0_10px_rgba(11,70,53,0.02)]">
       <div className="mb-4 px-2">
         <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">
-          {isAdmin ? 'Administration' : isSpecialist ? 'Specialist Workspace' : 'Farmer Workspace'}
+          {isAdmin ? t('adminWorkspace') : isSpecialist ? t('specialistWorkspace') : t('farmerWorkspace')}
         </p>
       </div>
 
@@ -71,17 +71,17 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   isActive
-                    ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-sm shadow-emerald-500/10'
-                    : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                    ? 'bg-sage-100 text-forest-900 font-bold border-l-4 border-forest-800 shadow-sm'
+                    : 'text-slate-600 hover:bg-sage-50 hover:text-forest-900'
                 }`
               }
             >
               <div className="flex items-center gap-3">
-                <Icon className="w-4 h-4 text-emerald-400 shrink-0" />
+                <Icon className="w-4 h-4 text-forest-800 shrink-0" />
                 <span className="truncate">{item.label}</span>
               </div>
               {item.badge && (
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sage-200/80 text-forest-800 border border-sage-300">
                   {item.badge}
                 </span>
               )}
@@ -89,17 +89,6 @@ const Sidebar = () => {
           );
         })}
       </nav>
-
-      {/* Trust & Verification Pill */}
-      <div className="mt-8 p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/60 text-xs text-slate-400">
-        <div className="flex items-center gap-2 mb-1.5">
-          <ShieldCheck className="w-4 h-4 text-emerald-400" />
-          <span className="font-bold text-slate-200">ICAR & SHA-256 Verified</span>
-        </div>
-        <p className="text-[11px] leading-relaxed">
-          Proactive AI risk model trained on meteorological & soil microclimate datasets.
-        </p>
-      </div>
     </aside>
   );
 };

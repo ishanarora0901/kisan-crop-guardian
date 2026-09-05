@@ -2,6 +2,7 @@ const CropCycle = require('../models/CropCycle');
 const Farm = require('../models/Farm');
 const SoilRecord = require('../models/SoilRecord');
 const CropPassport = require('../models/CropPassport');
+const FinancialRecord = require('../models/FinancialRecord');
 const BlockchainService = require('../services/blockchainService');
 const WeatherService = require('../services/weatherService');
 const AIRiskService = require('../services/aiRiskService');
@@ -19,7 +20,15 @@ const createCropCycle = async (req, res, next) => {
       expectedHarvestDate,
       fieldAreaAcres,
       previousCrop,
+      previousCropVariety,
+      previousYieldQuintals,
+      previousRevenue,
+      previousCost,
+      previousProfit,
       previousDiseases,
+      previousProblems,
+      irrigationMethod,
+      currentConcerns,
       seedInformation,
       nitrogenKgPerHa,
       phosphorusKgPerHa,
@@ -36,6 +45,17 @@ const createCropCycle = async (req, res, next) => {
     const sDate = sowingDate ? new Date(sowingDate) : new Date();
     const hDate = expectedHarvestDate ? new Date(expectedHarvestDate) : new Date(Date.now() + 120 * 24 * 60 * 60 * 1000);
 
+    const normPrevDiseases = Array.isArray(previousDiseases)
+      ? previousDiseases
+      : typeof previousDiseases === 'string' && previousDiseases.trim().length > 0
+      ? previousDiseases.split(',').map((d) => d.trim()).filter(Boolean)
+      : [];
+
+    const numPrevYield = Number(previousYieldQuintals) || 0;
+    const numPrevRevenue = Number(previousRevenue) || 0;
+    const numPrevCost = Number(previousCost) || 0;
+    const numPrevProfit = previousProfit !== undefined && previousProfit !== '' ? Number(previousProfit) : (numPrevRevenue - numPrevCost);
+
     const cropCycle = await CropCycle.create({
       farm: farm._id,
       farmer: req.user._id,
@@ -45,13 +65,67 @@ const createCropCycle = async (req, res, next) => {
       sowingDate: sDate,
       expectedHarvestDate: hDate,
       fieldAreaAcres: Number(fieldAreaAcres) || 5,
-      previousCrop: previousCrop || 'Rice (Basmati)',
-      previousDiseases: previousDiseases || ['Fungal Leaf Rust'],
+      previousCrop: previousCrop || '',
+      previousCropVariety: previousCropVariety || '',
+      previousYieldQuintals: numPrevYield,
+      previousRevenue: numPrevRevenue,
+      previousCost: numPrevCost,
+      previousProfit: numPrevProfit,
+      previousDiseases: normPrevDiseases,
+      previousProblems: previousProblems || '',
+      irrigationMethod: irrigationMethod || 'Tube-well with Drip / Sprinkler',
+      currentConcerns: currentConcerns || '',
       seedInformation: seedInformation || {
-        seedCompany: 'National Seeds Corporation',
-        seedTreatment: 'Carbendazim 2g/kg',
+        seedCompany: '',
+        seedTreatment: 'None',
+        seedSource: 'Certified Govt Seeds',
         seedRateKgPerAcre: 40,
       },
+    });
+
+    // If farmer provided past season details, immediately record their REAL past season record in the DB!
+    if (previousCrop || numPrevYield > 0 || numPrevProfit !== 0 || numPrevCost > 0 || normPrevDiseases.length > 0) {
+      const pastIssueStr = [
+        normPrevDiseases.join(', '),
+        previousProblems,
+      ].filter(Boolean).join(' | ');
+
+      await FinancialRecord.create({
+        cropCycle: cropCycle._id,
+        farmer: req.user._id,
+        seasonName: `Previous Season (${previousCrop || 'Previous Crop'})`,
+        isCurrentEstimate: false,
+        areaAcres: Number(fieldAreaAcres) || 5,
+        totalYieldQuintals: numPrevYield,
+        totalCost: numPrevCost,
+        totalRevenue: numPrevRevenue,
+        netProfit: numPrevProfit,
+        profitPerAcre: numPrevProfit ? Math.round(numPrevProfit / (Number(fieldAreaAcres) || 1)) : 0,
+        costPerQuintal: numPrevYield > 0 ? Math.round(numPrevCost / numPrevYield) : 0,
+        sellingPricePerQuintal: numPrevYield > 0 && numPrevRevenue > 0 ? Math.round(numPrevRevenue / numPrevYield) : 0,
+        primaryDiseaseOrIssue: pastIssueStr,
+        notes: `Farmer self-recorded historical baseline during ${cropCycle.cropName} cycle registration.`,
+      });
+    }
+
+    // Also create initial current season projection
+    const estYield = Math.round((Number(fieldAreaAcres) || 5) * 10.6);
+    const estCost = Math.round((Number(fieldAreaAcres) || 5) * 14400);
+    const estRev = Math.round(estYield * 2500);
+    await FinancialRecord.create({
+      cropCycle: cropCycle._id,
+      farmer: req.user._id,
+      seasonName: `${season} ${new Date().getFullYear()} (AI Projection)`,
+      isCurrentEstimate: true,
+      areaAcres: Number(fieldAreaAcres) || 5,
+      totalYieldQuintals: estYield,
+      totalCost: estCost,
+      totalRevenue: estRev,
+      netProfit: estRev - estCost,
+      profitPerAcre: Math.round((estRev - estCost) / (Number(fieldAreaAcres) || 5)),
+      costPerQuintal: Math.round(estCost / estYield),
+      sellingPricePerQuintal: 2500,
+      primaryDiseaseOrIssue: normPrevDiseases.length > 0 ? `Historical vigilance: ${normPrevDiseases.join(', ')}` : '',
     });
 
     // Create Initial Soil Record
